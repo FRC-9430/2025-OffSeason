@@ -36,9 +36,6 @@ public class RobotContainer {
         public static CommandXboxController c_operatorController = new CommandXboxController(
                         OIConstants.kOperatorControllerPort);
 
-        // Create instance of intake subsystem:
-        private static final IntakeSubsystem intakeSystem;
-
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
