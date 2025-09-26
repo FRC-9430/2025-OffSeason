@@ -8,6 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -86,9 +87,16 @@ public class RobotContainer {
                                 }));
 
                 // Bind the operator controllers B button to print "  operator contoller pressed /B button\ " to the console
-                
+                c_operatorController.b()
+                                .onTrue(new InstantCommand(() -> {
+                                        System.out.println("  operator controller pressed /B button\\ ");
+                                }));
                 // Bind the operator controllers A button to stop the intake motor
-                
+                c_operatorController.a()
+                                .onTrue(new InstantCommand(() -> {
+                                        intakeSystem.stopIntake();
+                                }));
+
                 // Bind the operator controllers left trigger to run the intake motor a the speed a the value the left trigger retrurns
                 
 
@@ -110,6 +118,7 @@ public class RobotContainer {
 
                         
                 }
+  
 
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.
