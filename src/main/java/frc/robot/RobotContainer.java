@@ -102,8 +102,7 @@ public class RobotContainer {
 
                 c_operatorController.leftTrigger(OIConstants.kTriggerThreshold)
                         .whileTrue(new RepeatCommand(new InstantCommand(() -> {
-                                double LtriggerAxis = c_operatorController.getLeftTriggerAxis();
-                                intakeSystem.runIntake(LtriggerAxis);
+                                intakeSystem.runIntake(c_operatorController.getLeftTriggerAxis());
                         }))).onFalse(new InstantCommand(() -> {
                                 intakeSystem.stopIntake();
                         }));
