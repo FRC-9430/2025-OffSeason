@@ -38,7 +38,7 @@ public class RobotContainer {
                         OIConstants.kOperatorControllerPort);
 
         // Create instance of intake subsystem:
-        private static final IntakeSubsystem intakeSystem;
+        private static final IntakeSubsystem intakeSystem = new IntakeSubsystem();
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
