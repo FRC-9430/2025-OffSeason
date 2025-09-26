@@ -78,7 +78,12 @@ public class RobotContainer {
                                 }))).onFalse(new InstantCommand(() -> {
                                         
                                 }));
+
+                // Bind the operator controllers B button to print "  operator contoller pressed /B button\ " to the console
                 
+                // Bind the operator controllers A button to stop the intake motor
+
+                // Bind the operator controllers left trigger to run the intake motor a the speed a the value the left trigger retrurns
 
                 // Y button
                 c_driverController.y()
