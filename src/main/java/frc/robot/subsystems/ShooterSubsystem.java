@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
+  SparkMax intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID,SparkMax.MotorType.kBrushless);
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {}
 
