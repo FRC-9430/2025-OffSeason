@@ -10,10 +10,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
+  //declares motors for shooter
   SparkMax intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID,SparkMax.MotorType.kBrushless);
+  SparkMax shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID,SparkMax.MotorType.kBrushless);
+
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {}
-
+  public void runIntake(double speed){
+    intakeMotor.set(speed);
+  }
+  public void stopIntake(){
+    intakeMotor.set(0);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
