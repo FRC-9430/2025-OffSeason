@@ -27,22 +27,41 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   }
 
+  /**
+   * Set the speed of the elevator motor.
+   * @param speed
+   */
   public void setElevatorMotor(double speed) {
     elevatorMotor.set(speed);
   }
 
+   /**
+    * Stop the elevator motor.
+    */
   public void stopElevatorMotor() {
     elevatorMotor.stopMotor();
   }
 
+  /**
+   * Get the position of the elevator from the absolute encoder.
+   * @return
+   */
   public double getElevatorPosition() {
     return absoluteEncoder.getPosition();
   }
 
+  /**
+   * Check if the elevator is above the upper limit.
+   * @return
+   */
   public boolean aboveLimit() {
     return getElevatorPosition() > ElevatorConstants.ElevatorUpperLimit;
   }
 
+  /**
+   * Check if the elevator is below the lower limit.
+   * @return
+   */
   public boolean belowLimit() {
     return getElevatorPosition() < ElevatorConstants.ElevatorLowerLimit;
   }
