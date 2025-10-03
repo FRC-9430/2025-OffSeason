@@ -14,6 +14,9 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
  SparkMax shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID,SparkMax.MotorType.kBrushless);
   public ShooterSubsystem() {}
+  public void runIntake(double speed){
+    intakeMotor.set(speed);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
