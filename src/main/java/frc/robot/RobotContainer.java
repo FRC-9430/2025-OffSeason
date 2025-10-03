@@ -3,11 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import frc.robot.Constants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    public static CommandXboxController c_operatorController = new CommandXboxController(OIConstants.k_operatorControllerPort);
     public RobotContainer() {
         configureBindings();
     }
