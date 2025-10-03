@@ -20,11 +20,23 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
-    
+
     elevatorMotorConfig.inverted(ElevatorConstants.ElevatorMotorInverted);
 
     elevatorMotor.configure(elevatorMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
+  }
+
+  public void setElevatorMotor(double speed) {
+    elevatorMotor.set(speed);
+  }
+
+  public void stopElevatorMotor() {
+    elevatorMotor.stopMotor();
+  }
+
+  public double getElevatorPosition() {
+    return absoluteEncoder.getPosition();
   }
 
   @Override
