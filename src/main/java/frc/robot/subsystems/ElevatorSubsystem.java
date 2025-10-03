@@ -4,21 +4,31 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-    /** Creates a new ElevatorSubsystem. */
-    public ElevatorSubsystem() {}
-  
-    @Override
-    public void periodic() {
-      // This method will be called once per scheduler run
-    }
+  private SparkFlex elevatorMotor = new SparkFlex(ElevatorConstants.kElevatorMotorPort, SparkFlex.MotorType.kBrushless);
+  private AbsoluteEncoder absoluteEncoder = elevatorMotor.getAbsoluteEncoder();
+  private SparkMaxConfig elevatorMotorConfig = new SparkMaxConfig();
+
+
+  /** Creates a new ElevatorSubsystem. */
+  public ElevatorSubsystem() {
   }
-  
-  class ElevatorConstants {
-  
-    public static final int kElevatorMotorPort = 20;
-  
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+}
+
+class ElevatorConstants {
+
+  public static final int kElevatorMotorPort = 20;
+
 }
