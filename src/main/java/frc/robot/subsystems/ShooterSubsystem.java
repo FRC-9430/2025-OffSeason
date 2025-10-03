@@ -12,10 +12,12 @@ import frc.robot.Constants.MotorConstants;
 public class ShooterSubsystem extends SubsystemBase {
   SparkMax intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID,SparkMax.MotorType.kBrushless);
   /** Creates a new ShooterSubsystem. */
+ SparkMax shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID,SparkMax.MotorType.kBrushless);
   public ShooterSubsystem() {}
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+   
+
 }
