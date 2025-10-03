@@ -39,6 +39,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     return absoluteEncoder.getPosition();
   }
 
+  public boolean aboveLimit() {
+    return getElevatorPosition() > ElevatorConstants.ElevatorUpperLimit;
+  }
+
+  public boolean belowLimit() {
+    return getElevatorPosition() < ElevatorConstants.ElevatorLowerLimit;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -49,5 +57,7 @@ class ElevatorConstants {
 
   public static final boolean ElevatorMotorInverted = false;
   public static final int kElevatorMotorPort = 20;
+  public static final double ElevatorLowerLimit = 0; //TODO: Set lower limit
+  public static final double ElevatorUpperLimit = 0; //TODO: Set upper limit
 
 }
