@@ -7,7 +7,9 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.utils.ControllerUtils;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -40,6 +42,8 @@ public class RobotContainer {
 
         // Create instance of intake subsystem:
         private static IntakeSubsystem intakeSystem;
+
+        private static ElevatorSubsystem elevatorSystem;
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -107,7 +111,12 @@ public class RobotContainer {
                                 intakeSystem.stopIntake();
                         }));
                 
-        
+                c_operatorController.axisGreaterThan(ControllerUtils.AXIS.LeftVertical.value, OIConstants.kTriggerThreshold)
+                        .whileTrue(new RepeatCommand(new InstantCommand(() -> {
+                                elevatorSystem.setElevatorMotor(c_operatorController.getLeftY());
+                        }))).onFalse(new InstantCommand(() -> {
+                            elevatorSystem.stopElevatorMotor();
+                        }));
                                 
                 // Y button
                 c_driverController.y()
