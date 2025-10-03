@@ -29,111 +29,108 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  * here.
  */
 public class RobotContainer {
-        // The robot's subsystems
-        private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    // The robot's subsystems
+    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
-        // The driver's controller
-        public static CommandXboxController c_driverController = new CommandXboxController(
-                        OIConstants.kDriverControllerPort);
+    // The driver's controller
+    public static CommandXboxController c_driverController = new CommandXboxController(
+            OIConstants.kDriverControllerPort);
 
-        // The operator's controller
-        public static CommandXboxController c_operatorController = new CommandXboxController(
-                        OIConstants.kOperatorControllerPort);
+    // The operator's controller
+    public static CommandXboxController c_operatorController = new CommandXboxController(
+            OIConstants.kOperatorControllerPort);
 
-        // Create instance of intake subsystem:
-        private static IntakeSubsystem intakeSystem;
+    // Create instance of intake subsystem:
+    private static IntakeSubsystem intakeSystem;
 
-        private static ElevatorSubsystem elevatorSystem;
+    private static ElevatorSubsystem elevatorSystem;
 
-        /**
-         * The container for the robot. Contains subsystems, OI devices, and commands.
-         */
-        public RobotContainer() {
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
 
-                intakeSystem = new IntakeSubsystem();
+        intakeSystem = new IntakeSubsystem();
 
-                // Configure the button bindings
-                configureButtonBindings();
+        // Configure the button bindings
+        configureButtonBindings();
 
+        // Configure default commands
+        m_robotDrive.setDefaultCommand(
+                // The left stick controls translation of the robot.
+                // Turning is controlled by the X axis of the right stick.
+                new RunCommand(
+                        () -> m_robotDrive.drive(
+                                -MathUtil.applyDeadband(c_driverController.getLeftY(),
+                                        OIConstants.kDriveDeadband),
+                                -MathUtil.applyDeadband(c_driverController.getLeftX(),
+                                        OIConstants.kDriveDeadband),
+                                -MathUtil.applyDeadband(c_driverController.getRightX(),
+                                        OIConstants.kDriveDeadband),
+                                true),
+                        m_robotDrive));
+    }
 
-                // Configure default commands
-                m_robotDrive.setDefaultCommand(
-                                // The left stick controls translation of the robot.
-                                // Turning is controlled by the X axis of the right stick.
-                                new RunCommand(
-                                                () -> m_robotDrive.drive(
-                                                                -MathUtil.applyDeadband(c_driverController.getLeftY(),
-                                                                                OIConstants.kDriveDeadband),
-                                                                -MathUtil.applyDeadband(c_driverController.getLeftX(),
-                                                                                OIConstants.kDriveDeadband),
-                                                                -MathUtil.applyDeadband(c_driverController.getRightX(),
-                                                                                OIConstants.kDriveDeadband),
-                                                                true),
-                                                m_robotDrive));
-        }
+    /**
+     * <p>
+     * Binds Commands to Xbox controller buttons using
+     * {@link CommandXboxController} methods
+     * <p>
+     * This method should only be run once by the constructer
+     */
+    private void configureButtonBindings() {
 
-        /**
-         * <p>
-         * Binds Commands to Xbox controller buttons using
-         * {@link CommandXboxController} methods
-         * <p>
-         * This method should only be run once by the constructer
-         */
-        private void configureButtonBindings() {
+        // Right trigger -
+        c_operatorController.rightTrigger(OIConstants.kTriggerThreshold)
+                .whileTrue(new RepeatCommand(new InstantCommand(() -> {
 
+                }))).onFalse(new InstantCommand(() -> {
 
-                 // Right trigger -
-                c_operatorController.rightTrigger(OIConstants.kTriggerThreshold)
-                                .whileTrue(new RepeatCommand(new InstantCommand(() -> {
-                                        
-                                }))).onFalse(new InstantCommand(() -> {
-                                        
-                                }));
+                }));
 
-                // Bind the operator controllers B button to print "  operator contoller pressed /B button\ " to the console
-                c_operatorController.b()
-                                .onTrue(new InstantCommand(() -> {
-                                        System.out.println("  operator controller pressed /B button\\ ");
-                                }));
-                // Bind the operator controllers A button to stop the intake motor
-                c_operatorController.a()
-                                .onTrue(new InstantCommand(() -> {
-                                        intakeSystem.stopIntake();
-                                }));
+        // Bind the operator controllers B button to print " operator contoller pressed
+        // /B button\ " to the console
+        c_operatorController.b()
+                .onTrue(new InstantCommand(() -> {
+                    System.out.println("  operator controller pressed /B button\\ ");
+                }));
+        // Bind the operator controllers A button to stop the intake motor
+        c_operatorController.a()
+                .onTrue(new InstantCommand(() -> {
+                    intakeSystem.stopIntake();
+                }));
 
-                // Bind the operator controllers left trigger to run the intake motor a the speed a the value the left trigger retrurns
-                
+        // Bind the operator controllers left trigger to run the intake motor a the
+        // speed a the value the left trigger retrurns
 
-                c_operatorController.leftTrigger(OIConstants.kTriggerThreshold)
-                        .whileTrue(new RepeatCommand(new InstantCommand(() -> {
-                                intakeSystem.runIntake(c_operatorController.getLeftTriggerAxis());
-                        }))).onFalse(new InstantCommand(() -> {
-                                intakeSystem.stopIntake();
-                        }));
-                
-                c_operatorController.axisGreaterThan(ControllerUtils.AXIS.LeftVertical.value, OIConstants.kTriggerThreshold)
-                        .whileTrue(new RepeatCommand(new InstantCommand(() -> {
-                                elevatorSystem.setElevatorMotor(c_operatorController.getLeftY());
-                        }))).onFalse(new InstantCommand(() -> {
-                            elevatorSystem.stopElevatorMotor();
-                        }));
-                                
-                // Y button
-                c_driverController.y()
-                                .onTrue(new InstantCommand(() -> {
-                                        
-                                }));
+        c_operatorController.leftTrigger(OIConstants.kTriggerThreshold)
+                .whileTrue(new RepeatCommand(new InstantCommand(() -> {
+                    intakeSystem.runIntake(c_operatorController.getLeftTriggerAxis());
+                }))).onFalse(new InstantCommand(() -> {
+                    intakeSystem.stopIntake();
+                }));
 
-                        
-                }
-  
+        c_operatorController.axisGreaterThan(ControllerUtils.AXIS.LeftVertical.value, OIConstants.kTriggerThreshold)
+                .whileTrue(new RepeatCommand(new InstantCommand(() -> {
+                    elevatorSystem.setElevatorMotor(c_operatorController.getLeftY());
+                }))).onFalse(new InstantCommand(() -> {
+                    elevatorSystem.stopElevatorMotor();
+                }));
 
-        /**
-         * Use this to pass the autonomous command to the main {@link Robot} class.
-         *
-         * @return the command to run in autonomous
-         */
-        public Command getAutonomousCommand() {
-                return Commands.none();
-        }
+        // Y button
+        c_driverController.y()
+                .onTrue(new InstantCommand(() -> {
+
+                }));
+
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return Commands.none();
+    }
 }
