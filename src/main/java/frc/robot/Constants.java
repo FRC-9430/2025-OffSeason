@@ -6,6 +6,9 @@ package frc.robot;
 
 /** Add your docs here. */
 public final class Constants {
+    public static final class OIConstants{
+        public static final int k_operatorControllerPort = 1;
+    }
     public static final class MotorConstants{
         public static final int IntakeMotorCanID = 20; // needs to be configured
         public static final int ShooterMotorCanID = 21; // needs to be configured
