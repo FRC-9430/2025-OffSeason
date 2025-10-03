@@ -12,5 +12,8 @@ public final class Constants {
     public static final class MotorConstants{
         public static final int IntakeMotorCanID = 20; // needs to be configured
         public static final int ShooterMotorCanID = 21; // needs to be configured
+        public static final double kShooterPivotMaxHeight = .48;
+        public static final double kShooterPivotMinHeight = .095;
+
     }
 }

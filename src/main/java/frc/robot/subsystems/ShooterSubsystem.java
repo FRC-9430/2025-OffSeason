@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,22 +12,29 @@ import frc.robot.Constants.MotorConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   //declares motors for shooter
-  SparkMax intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID,SparkMax.MotorType.kBrushless);
-  SparkMax shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID,SparkMax.MotorType.kBrushless);
+  SparkMax intakeMotor;
+  SparkMax shooterMotor;
+  private AbsoluteEncoder shooterEncoder;
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+    intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID,SparkMax.MotorType.kBrushless);
+    shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID,SparkMax.MotorType.kBrushless);
+    shooterEncoder = shooterMotor.getAbsoluteEncoder();
+  }
   public void runIntake(double speed){
     intakeMotor.set(speed);
   }
   public void stopIntake(){
-    intakeMotor.set(0);
+    intakeMotor.stopMotor();
   }
-  public void rotateShooter (double speed){
-  shooterMotor.set(speed);
-  }
-  public void stopRotateShooter(){
-  shooterMotor.set(0); 
+  public void setShooterSpeed (double speed){
+    boolean isMotorSafe = shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight;
+    while(isMotorSafe){
+      shooterMotor.set(speed);
+    }
+    shooterMotor.stopMotor();
+    
   }
   @Override
   public void periodic() {
