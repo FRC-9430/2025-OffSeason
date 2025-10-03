@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-  private SparkFlex elevatorMotor = new SparkFlex(ElevatorConstants.kElevatorMotorPort, SparkFlex.MotorType.kBrushless);
+  private SparkFlex elevatorMotor = new SparkFlex(ElevatorConstants.kElevatorMotorCanID, SparkFlex.MotorType.kBrushless);
   private AbsoluteEncoder absoluteEncoder = elevatorMotor.getAbsoluteEncoder();
   private SparkMaxConfig elevatorMotorConfig = new SparkMaxConfig();
 
@@ -71,11 +71,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 }
-
+/**
+ * Constants for the ElevatorSubsystem.
+ */
 class ElevatorConstants {
 
+  public static final int kElevatorMotorCanID = 20; //TODO: Set motor CAN ID
+
   public static final boolean ElevatorMotorInverted = false;
-  public static final int kElevatorMotorPort = 20;
+  
   public static final double ElevatorLowerLimit = 0; //TODO: Set lower limit
   public static final double ElevatorUpperLimit = 0; //TODO: Set upper limit
 
