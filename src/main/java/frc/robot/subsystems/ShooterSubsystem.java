@@ -22,6 +22,12 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopIntake(){
     intakeMotor.set(0);
   }
+  public void rotateShooter (double speed){
+  shooterMotor.set(speed);
+  }
+  public void stopRotateShooter(){
+  shooterMotor.set(0); 
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
