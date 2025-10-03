@@ -7,11 +7,18 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  /** Creates a new ElevatorSubsystem. */
-  public ElevatorSubsystem() {}
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+    /** Creates a new ElevatorSubsystem. */
+    public ElevatorSubsystem() {}
+  
+    @Override
+    public void periodic() {
+      // This method will be called once per scheduler run
+    }
   }
+  
+  class ElevatorConstants {
+  
+    public static final int kElevatorMotorPort = 20;
+  
 }
