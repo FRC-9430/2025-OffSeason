@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -16,9 +18,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   private AbsoluteEncoder absoluteEncoder = elevatorMotor.getAbsoluteEncoder();
   private SparkMaxConfig elevatorMotorConfig = new SparkMaxConfig();
 
-
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
+    
+    elevatorMotorConfig.inverted(ElevatorConstants.ElevatorMotorInverted);
+
+    elevatorMotor.configure(elevatorMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
   }
 
   @Override
@@ -29,6 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 class ElevatorConstants {
 
+  public static final boolean ElevatorMotorInverted = false;
   public static final int kElevatorMotorPort = 20;
 
 }
