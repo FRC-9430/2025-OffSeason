@@ -4,18 +4,127 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+/**
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot
+ * (including subsystems, commands, and button mappings) should be declared
+ * here.
+ */
 public class RobotContainer {
-    public RobotContainer() {
-        configureBindings();
-    }
+        // The robot's subsystems
+        private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
-    private void configureBindings() {
-    }
+        // The driver's controller
+        public static CommandXboxController c_driverController = new CommandXboxController(
+                        OIConstants.kDriverControllerPort);
 
-    public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
-    }
+        // The operator's controller
+        public static CommandXboxController c_operatorController = new CommandXboxController(
+                        OIConstants.kOperatorControllerPort);
+
+        // Create instance of intake subsystem:
+        private static IntakeSubsystem intakeSystem;
+
+        /**
+         * The container for the robot. Contains subsystems, OI devices, and commands.
+         */
+        public RobotContainer() {
+
+                intakeSystem = new IntakeSubsystem();
+
+                // Configure the button bindings
+                configureButtonBindings();
+
+
+                // Configure default commands
+                m_robotDrive.setDefaultCommand(
+                                // The left stick controls translation of the robot.
+                                // Turning is controlled by the X axis of the right stick.
+                                new RunCommand(
+                                                () -> m_robotDrive.drive(
+                                                                -MathUtil.applyDeadband(c_driverController.getLeftY(),
+                                                                                OIConstants.kDriveDeadband),
+                                                                -MathUtil.applyDeadband(c_driverController.getLeftX(),
+                                                                                OIConstants.kDriveDeadband),
+                                                                -MathUtil.applyDeadband(c_driverController.getRightX(),
+                                                                                OIConstants.kDriveDeadband),
+                                                                true),
+                                                m_robotDrive));
+        }
+
+        /**
+         * <p>
+         * Binds Commands to Xbox controller buttons using
+         * {@link CommandXboxController} methods
+         * <p>
+         * This method should only be run once by the constructer
+         */
+        private void configureButtonBindings() {
+
+
+                 // Right trigger -
+                c_operatorController.rightTrigger(OIConstants.kTriggerThreshold)
+                                .whileTrue(new RepeatCommand(new InstantCommand(() -> {
+                                        
+                                }))).onFalse(new InstantCommand(() -> {
+                                        
+                                }));
+
+                // Bind the operator controllers B button to print "  operator contoller pressed /B button\ " to the console
+                c_operatorController.b()
+                                .onTrue(new InstantCommand(() -> {
+                                        System.out.println("  operator controller pressed /B button\\ ");
+                                }));
+                // Bind the operator controllers A button to stop the intake motor
+                c_operatorController.a()
+                                .onTrue(new InstantCommand(() -> {
+                                        intakeSystem.stopIntake();
+                                }));
+
+                // Bind the operator controllers left trigger to run the intake motor a the speed a the value the left trigger retrurns
+                
+
+                c_operatorController.leftTrigger(OIConstants.kTriggerThreshold)
+                        .whileTrue(new RepeatCommand(new InstantCommand(() -> {
+                                intakeSystem.runIntake(c_operatorController.getLeftTriggerAxis());
+                        }))).onFalse(new InstantCommand(() -> {
+                                intakeSystem.stopIntake();
+                        }));
+                
+        
+                                
+                // Y button
+                c_driverController.y()
+                                .onTrue(new InstantCommand(() -> {
+                                        
+                                }));
+
+                        
+                }
+  
+
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                return Commands.none();
+        }
 }
