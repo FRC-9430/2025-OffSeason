@@ -10,7 +10,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.utils.ControllerUtils;
-import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -80,7 +79,6 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
-        // Right trigger -
         c_operatorController.rightTrigger(OIConstants.kTriggerThreshold)
                 .whileTrue(new RepeatCommand(new InstantCommand(() -> {
 
@@ -94,6 +92,7 @@ public class RobotContainer {
                 .onTrue(new InstantCommand(() -> {
                     System.out.println("  operator controller pressed /B button\\ ");
                 }));
+
         // Bind the operator controllers A button to stop the intake motor
         c_operatorController.a()
                 .onTrue(new InstantCommand(() -> {
@@ -102,7 +101,6 @@ public class RobotContainer {
 
         // Bind the operator controllers left trigger to run the intake motor a the
         // speed a the value the left trigger retrurns
-
         c_operatorController.leftTrigger(OIConstants.kTriggerThreshold)
                 .whileTrue(new RepeatCommand(new InstantCommand(() -> {
                     intakeSystem.runIntake(c_operatorController.getLeftTriggerAxis());
@@ -110,6 +108,7 @@ public class RobotContainer {
                     intakeSystem.stopIntake();
                 }));
 
+        // Bind the operator controllers left vertical axis to run the elevator motor
         c_operatorController.axisGreaterThan(ControllerUtils.AXIS.LeftVertical.value, OIConstants.kTriggerThreshold)
                 .whileTrue(new RepeatCommand(new InstantCommand(() -> {
                     elevatorSystem.setElevatorMotor(c_operatorController.getLeftY());
