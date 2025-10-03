@@ -12,6 +12,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * Elevator subsystem for controlling the elevator motor and reading the absolute encoder values.
+ */
 public class ElevatorSubsystem extends SubsystemBase {
 
   private SparkFlex elevatorMotor = new SparkFlex(ElevatorConstants.kElevatorMotorCanID, SparkFlex.MotorType.kBrushless);
@@ -71,6 +74,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 }
+
 /**
  * Constants for the ElevatorSubsystem.
  */
