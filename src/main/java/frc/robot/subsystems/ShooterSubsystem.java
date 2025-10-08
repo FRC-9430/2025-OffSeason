@@ -11,31 +11,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  //declares motors for shooter
+  // declares motors for shooter
   SparkMax intakeMotor;
   SparkMax shooterMotor;
   private AbsoluteEncoder shooterEncoder;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID,SparkMax.MotorType.kBrushless);
-    shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID,SparkMax.MotorType.kBrushless);
+    intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID, SparkMax.MotorType.kBrushless);
+    shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID, SparkMax.MotorType.kBrushless);
     shooterEncoder = shooterMotor.getAbsoluteEncoder();
   }
-  public void runIntake(double speed){
+
+  public void runIntake(double speed) {
     intakeMotor.set(speed);
   }
-  public void stopIntake(){
+
+  public void stopIntake() {
     intakeMotor.stopMotor();
   }
-  public void setShooterSpeed (double speed){
-    boolean isMotorSafe = shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight;
-    while(isMotorSafe){
+
+  public void setShooterSpeed(double speed) {
+    while (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight
+        && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight) {
       shooterMotor.set(speed);
     }
     shooterMotor.stopMotor();
-    
+
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
