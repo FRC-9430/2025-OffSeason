@@ -22,9 +22,11 @@ public class RobotContainer {
     private void configureBindings() {
 
     c_operatorController.a()
-    .onTrue(new InstantCommand(() -> { 
+    .whileTrue(new InstantCommand(() -> { 
       shooterSubsystem.runIntake(.1);
-    })) .onFalse(new InstantCommand());
+    })) .onFalse(new InstantCommand(() -> { 
+        shooterSubsystem.stopIntake();
+      }));
     }
 
     public Command getAutonomousCommand() {
