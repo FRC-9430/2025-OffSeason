@@ -9,6 +9,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
@@ -19,6 +20,11 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+
+    c_operatorController.a()
+    .onTrue(new InstantCommand(() -> { 
+      shooterSubsystem.runIntake(.1);
+    })) .onFalse(new InstantCommand());
     }
 
     public Command getAutonomousCommand() {
