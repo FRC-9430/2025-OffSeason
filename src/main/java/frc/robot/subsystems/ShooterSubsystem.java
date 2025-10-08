@@ -12,8 +12,8 @@ import frc.robot.Constants.MotorConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   //declares motors for shooter
-  SparkMax intakeMotor;
-  SparkMax shooterMotor;
+  private SparkMax intakeMotor;
+  private SparkMax shooterMotor;
   private AbsoluteEncoder shooterEncoder;
 
   /** Creates a new ShooterSubsystem. */
@@ -34,7 +34,7 @@ public class ShooterSubsystem extends SubsystemBase {
       shooterMotor.set(speed);
     }
     shooterMotor.stopMotor();
-    
+
   }
   @Override
   public void periodic() {
