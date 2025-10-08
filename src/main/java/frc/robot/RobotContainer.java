@@ -7,12 +7,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
+import frc.robot.Constants;
+import frc.robot.subsystems.Shooter;
+
 public class RobotContainer {
     public RobotContainer() {
         configureBindings();
+        Shooter m_Shooter = new Shooter();
     }
 
     private void configureBindings() {
+        // Shooter operation binds
     }
 
     public Command getAutonomousCommand() {
