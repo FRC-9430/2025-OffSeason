@@ -33,7 +33,20 @@ public class RobotContainer {
       shooterSubsystem.runIntake(-.1);
     })) .onFalse(new InstantCommand(() -> { 
         shooterSubsystem.stopIntake();
+        
       }));
+
+    c_operatorController.x()
+    .whileTrue(new InstantCommand(() -> { 
+      shooterSubsystem.setShooterSpeed(.1);
+    })) .onFalse(new InstantCommand(() -> { 
+        shooterSubsystem.setShooterSpeed(0);
+          
+      }));
+
+
+
+
     }
 
     public Command getAutonomousCommand() {
