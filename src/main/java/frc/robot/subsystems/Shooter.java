@@ -94,7 +94,7 @@ public class Shooter extends SubsystemBase {
                 // robot safety check -- physical constraints
                 boolean isPivotSafe = pivotEncoder.getPosition() < ShooterConstants.kShooterPivotMaxHeight
                     && pivotEncoder.getPosition() > ShooterConstants.kShooterPivotMinHeight ;
-                while (isPivotSafe) {
+                if (isPivotSafe) {
                     // safe to move motor in these conditions
                     targetMotor.set(speed);
                 }
