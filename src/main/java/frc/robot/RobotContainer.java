@@ -27,6 +27,13 @@ public class RobotContainer {
     })) .onFalse(new InstantCommand(() -> { 
         shooterSubsystem.stopIntake();
       }));
+
+      c_operatorController.b()
+    .whileTrue(new InstantCommand(() -> { 
+      shooterSubsystem.runIntake(-.1);
+    })) .onFalse(new InstantCommand(() -> { 
+        shooterSubsystem.stopIntake();
+      }));
     }
 
     public Command getAutonomousCommand() {
