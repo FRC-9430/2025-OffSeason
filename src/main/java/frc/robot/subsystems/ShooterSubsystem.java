@@ -11,9 +11,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
+<<<<<<< HEAD
   // declares motors for shooter
   SparkMax intakeMotor;
   SparkMax shooterMotor;
+=======
+
+  // Declare motors for shooter
+  private SparkMax intakeMotor;
+  private SparkMax shooterMotor;
+>>>>>>> a890ba0c47a449bd08de3ab62f7b2e659abdc886
   private AbsoluteEncoder shooterEncoder;
 
   /** Creates a new ShooterSubsystem. */
@@ -32,6 +39,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> a890ba0c47a449bd08de3ab62f7b2e659abdc886
     while (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight
         && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight) {
       shooterMotor.set(speed);
