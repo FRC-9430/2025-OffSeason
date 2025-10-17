@@ -15,6 +15,7 @@ public class Constants {
         public static final DigitalSource[] kRightEncoderPorts = null;
         public static final DigitalSource kRightEncoderReversed = null;
         public static final double kEncoderDistancePerPulse = 0;
+        public static final int kPigeonID = 0;
 
     }  
 }
