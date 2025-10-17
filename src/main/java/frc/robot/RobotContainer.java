@@ -34,7 +34,16 @@ public class RobotContainer {
     })) .onFalse(new InstantCommand(() -> { 
         shooterSubsystem.stopIntake();
       }));
+      c_operatorController.x()
+.onTrue(new InstantCommand(() -> {
+  shooterSubsystem.setShooterPosition(0.3);
+}));
+c_operatorController.y()
+.onTrue(new InstantCommand(() -> {
+  shooterSubsystem.setShooterPosition(0.15);
+}));
     }
+    
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
