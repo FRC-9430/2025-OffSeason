@@ -39,6 +39,17 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
+  public void setShooterPosition(double desiredPosition){
+    while (shooterEncoder.getPosition() < desiredPosition - .05
+    || shooterEncoder.getPosition() > desiredPosition + .05) {
+      if(shooterEncoder.getPosition() < desiredPosition){
+        setShooterSpeed(.005);
+      }else{
+        setShooterSpeed(-.005);
+      }
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
