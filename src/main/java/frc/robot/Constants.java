@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.revrobotics.spark.config.SparkBaseConfig;
+
 import edu.wpi.first.wpilibj.DigitalSource;
 
 public class Constants {
@@ -21,6 +23,11 @@ public class Constants {
 
     
     public static final class Configs {
+
+        public static final class X2TSwerveModule {
+            public static final SparkBaseConfig drivingConfig = null;
+            public static final SparkBaseConfig turningConfig = null;
+        };
 
 
     }
