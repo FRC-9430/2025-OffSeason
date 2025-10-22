@@ -14,31 +14,31 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    public static CommandXboxController c_operatorController = new CommandXboxController(OIConstants.k_operatorControllerPort);
+    public static CommandXboxController k_operatorControllerPort = new CommandXboxController(OIConstants.k_operatorControllerPort);
     public RobotContainer() {
         configureBindings();
     }
 
     private void configureBindings() {
 
-    c_operatorController.a()
+    k_operatorControllerPort.a()
     .whileTrue(new InstantCommand(() -> { 
       shooterSubsystem.runIntake(.1);
     })) .onFalse(new InstantCommand(() -> { 
         shooterSubsystem.stopIntake();
       }));
 
-      c_operatorController.b()
+      k_operatorControllerPort.b()
     .whileTrue(new InstantCommand(() -> { 
       shooterSubsystem.runIntake(-.1);
     })) .onFalse(new InstantCommand(() -> { 
         shooterSubsystem.stopIntake();
       }));
-      c_operatorController.x()
+      k_operatorControllerPort.x()
 .onTrue(new InstantCommand(() -> {
   shooterSubsystem.setShooterPosition(0.3);
 }));
-c_operatorController.y()
+k_operatorControllerPort.y()
 .onTrue(new InstantCommand(() -> {
   shooterSubsystem.setShooterPosition(0.15);
 }));
