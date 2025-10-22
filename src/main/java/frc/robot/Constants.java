@@ -10,8 +10,8 @@ public final class Constants {
         public static final int k_operatorControllerPort = 1;
     }
     public static final class MotorConstants{
-        public static final int IntakeMotorCanID = 31; // needs to be configured
-        public static final int ShooterMotorCanID = 21; // needs to be configured
+        public static final int IntakeMotorCanID = 41;
+        public static final int ShooterMotorCanID = 42;
         public static final double kShooterPivotMaxHeight = .48;
         public static final double kShooterPivotMinHeight = .095;
 
