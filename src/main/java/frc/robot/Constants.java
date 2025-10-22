@@ -6,16 +6,23 @@ public class Constants {
 
     public class DriveConstants {
 
-        public static final int kLeftMotor1Port = 0;
-        public static final int kLeftMotor2Port = 0;
-        public static final int kRightMotor1Port = 0;
-        public static final int kRightMotor2Port = 0;
-        public static final DigitalSource[] kLeftEncoderPorts = null;
-        public static final DigitalSource kLeftEncoderReversed = null;
-        public static final DigitalSource[] kRightEncoderPorts = null;
-        public static final DigitalSource kRightEncoderReversed = null;
-        public static final double kEncoderDistancePerPulse = 0;
-        public static final int kPigeonID = 0;
+        public static final int kFrontLeftDriveMotorCanID = 1;
+        public static final int kFrontLeftTurningMotorCanID = 2;
+        public static final int kFrontRightDriveMotorCanID = 3;
+        public static final int kFrontRightTurningMotorCanID = 4;
+        public static final int kBackLeftDriveMotorCanID = 5;
+        public static final int kBackLeftTurningMotorCanID = 6;
+        public static final int kBackRightDriveMotorCanID = 7;
+        public static final int kBackRightTurningMotorCanID = 8;
 
-    }  
+        public static final int pigeon2CanID = 0;
+
+    }
+
+    
+    public static final class Configs {
+
+
+    }
+        
 }
