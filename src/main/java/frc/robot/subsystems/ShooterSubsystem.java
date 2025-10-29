@@ -33,24 +33,19 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
-    while (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight + .05
-        && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight - .05) {
+    if (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight 
+        && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight ) {
           shooterMotor.set(speed);
+    }else{
+      stopShooter();
     }
+    // shooterMotor.stopMotor();
+  }
+
+  public void stopShooter() {
     shooterMotor.stopMotor();
   }
 
-  public void setShooterPosition(double desiredPosition){
-    while (shooterEncoder.getPosition() < desiredPosition - .05
-    || shooterEncoder.getPosition() > desiredPosition + .05) {
-      if(shooterEncoder.getPosition() < desiredPosition){
-        setShooterSpeed(.05);
-      }else{
-        setShooterSpeed(-.05);
-      }
-    }
-    shooterMotor.stopMotor();
-  }
 
   @Override
   public void periodic() {
