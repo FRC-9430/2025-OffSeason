@@ -36,11 +36,11 @@ public class RobotContainer {
       }));
       k_operatorControllerPort.x()
 .onTrue(new InstantCommand(() -> {
-  shooterSubsystem.setShooterPosition(0.4);
+  shooterSubsystem.setShooterSpeed(-.05);
 }));
 k_operatorControllerPort.y()
 .onTrue(new InstantCommand(() -> {
-  shooterSubsystem.setShooterPosition(0.15);
+  shooterSubsystem.setShooterSpeed(.05);
 }));
     }
     
