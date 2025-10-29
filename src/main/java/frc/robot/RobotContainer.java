@@ -36,7 +36,7 @@ public class RobotContainer {
       }));
       c_operatorController.x()
 .onTrue(new InstantCommand(() -> {
-  shooterSubsystem.setShooterPosition(0.3);
+  shooterSubsystem.setShooterPosition(0.4);
 }));
 c_operatorController.y()
 .onTrue(new InstantCommand(() -> {
