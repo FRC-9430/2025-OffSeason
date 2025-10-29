@@ -43,11 +43,12 @@ public class ShooterSubsystem extends SubsystemBase {
     while (shooterEncoder.getPosition() < desiredPosition - .05
     || shooterEncoder.getPosition() > desiredPosition + .05) {
       if(shooterEncoder.getPosition() < desiredPosition){
-        setShooterSpeed(.005);
+        setShooterSpeed(.05);
       }else{
-        setShooterSpeed(-.005);
+        setShooterSpeed(-.05);
       }
     }
+    shooterMotor.stopMotor();
   }
 
   @Override
