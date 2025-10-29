@@ -13,7 +13,7 @@ public final class Constants {
         public static final int IntakeMotorCanID = 41;
         public static final int ShooterMotorCanID = 42;
         public static final double kShooterPivotMaxHeight = .48;
-        public static final double kShooterPivotMinHeight = .095;
+        public static final double kShooterPivotMinHeight = .099;
 
     }
 }
