@@ -11,16 +11,16 @@ public class Constants {
 
     public class DriveConstants {
 
-        public static final int kFrontLeftDriveMotorCanID = 1;
-        public static final int kFrontLeftTurningMotorCanID = 2;
-        public static final int kFrontRightDriveMotorCanID = 3;
-        public static final int kFrontRightTurningMotorCanID = 4;
-        public static final int kBackLeftDriveMotorCanID = 5;
-        public static final int kBackLeftTurningMotorCanID = 6;
-        public static final int kBackRightDriveMotorCanID = 7;
-        public static final int kBackRightTurningMotorCanID = 8;
+        public static final int kFrontLeftDriveMotorCanID = 11;
+        public static final int kFrontLeftTurningMotorCanID = 10;
+        public static final int kFrontRightDriveMotorCanID = 13;
+        public static final int kFrontRightTurningMotorCanID = 12;
+        public static final int kBackLeftDriveMotorCanID = 15;
+        public static final int kBackLeftTurningMotorCanID = 14;
+        public static final int kBackRightDriveMotorCanID = 17;
+        public static final int kBackRightTurningMotorCanID = 16;
 
-        public static final int pigeon2CanID = 0;
+        public static final int pigeon2CanID = 1;
 
         public static final double kMaxSpeedMetersPerSecond = 4.8;
         public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
