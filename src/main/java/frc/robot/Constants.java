@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -54,8 +55,8 @@ public class Constants {
     public static final class Configs {
 
         public static final class X2TSwerveModule {
-            public static final SparkBaseConfig drivingConfig = null;
-            public static final SparkBaseConfig turningConfig = null;
+            public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
+            public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
         };
 
     }
