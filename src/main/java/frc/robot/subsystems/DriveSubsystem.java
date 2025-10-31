@@ -127,12 +127,12 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
   }
-
-  @Override
-  public void periodic() {
-    m_odometry.update(m_gyro.getRotation2d(), getSwervePositions());
-  }
-
+  
+    @Override
+    public void periodic() {
+      m_odometry.update(m_gyro.getRotation2d(), getSwervePositions());
+    }
+  
   /**
    * Get the swerve modules' current positions (how far each wheel has rolled).
    */
@@ -144,6 +144,19 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearRight.getPosition()
     };
   }
+
+  /**
+   * Lock the robot’s wheels in an "X" shape to help keep it from being pushed
+   * around when stopped.
+   * Sets the wheels into an X formation to prevent movement.
+   */
+  public void setX() {
+    m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  }
+
 
   /**
    * Returns the currently-estimated pose of the robot.
