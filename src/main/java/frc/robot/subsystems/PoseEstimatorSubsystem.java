@@ -64,6 +64,24 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  /**
+   * Returns the odometry estimated pose of the robot.
+   * 
+   * @return
+   */
+  private Pose2d getOdometryEstimatedPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  /**
+   * Returns the camera estimated pose of the robot.
+   * 
+   * @return
+   */
+  private Pose2d getCameraEstimatedPose() {
+    return new Pose2d();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
