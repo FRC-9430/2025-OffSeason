@@ -4,11 +4,65 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
+
+/**
+ * Pose estimation subsyestem designed to overwrite the default swerve odometry
+ * with vision and gyroscope data.
+ */
 public class PoseEstimatorSubsystem extends SubsystemBase {
+
+  private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.pigeon2CanID);
+
+  private SwerveDriveOdometry m_odometry;
+
   /** Creates a new PoseEstimatorSubsystem. */
-  public PoseEstimatorSubsystem() {}
+  public PoseEstimatorSubsystem() {
+    m_odometry = new SwerveDriveOdometry(
+        Constants.DriveConstants.kDriveKinematics,
+        new Rotation2d(),
+        new SwerveModulePosition[] {
+            new SwerveModulePosition(),
+            new SwerveModulePosition(),
+            new SwerveModulePosition(),
+            new SwerveModulePosition()
+        });
+  }
+
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetPosition(Pose2d pose) {
+    m_odometry.resetPose(pose);
+  }
+
+  /**
+   * Update the odometry with the latest swerve module positions.
+   * 
+   * @param swervePositions
+   */
+  public void update(SwerveModulePosition[] swervePositions) {
+    m_odometry.update(m_gyro.getRotation2d(), swervePositions);
+  }
+
+  /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
 
   @Override
   public void periodic() {
