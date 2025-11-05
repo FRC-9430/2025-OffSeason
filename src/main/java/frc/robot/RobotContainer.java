@@ -26,26 +26,26 @@ public class RobotContainer {
 
     k_operatorControllerPort.a()
         .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.runIntake(.1);
+          shooterSubsystem.runIntake(.3);
         })).onFalse(new InstantCommand(() -> {
           shooterSubsystem.stopIntake();
         }));
 
     k_operatorControllerPort.b()
         .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.runIntake(-.1);
+          shooterSubsystem.runIntake(-.3);
         })).onFalse(new InstantCommand(() -> {
           shooterSubsystem.stopIntake();
         }));
     k_operatorControllerPort.x()
         .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.setShooterSpeed(-.05);
+          shooterSubsystem.setShooterSpeed(-.1);
         })).onFalse(new InstantCommand(()->{
           shooterSubsystem.stopShooter();
         }));
     k_operatorControllerPort.y()
         .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.setShooterSpeed(.05);
+          shooterSubsystem.setShooterSpeed(.1);
         })).onFalse(new InstantCommand(()->{
           shooterSubsystem.stopShooter();
         }));
