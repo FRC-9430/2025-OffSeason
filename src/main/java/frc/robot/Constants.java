@@ -1,10 +1,15 @@
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -53,6 +58,40 @@ public class Constants {
         public static final double kDriveDeadband = 0.08;
         public static final double kTriggerThreshold = 0.1;
     }
+
+     public static final class VisionConstants {
+    public static final int[] kAlignApriltagIDs = new int[] { 6 };
+
+    public static final String FL_CAMERA_NAME = "Arducam_FL";
+    public static final String FR_CAMERA_NAME = "Arducam_FR";
+    public static final String BL_CAMERA_NAME = "Arducam_BL";
+    public static final String BR_CAMERA_NAME = "Arducam_BR";
+
+    public static final PhotonCamera FRONT_LEFT_CAMERA = new PhotonCamera(FL_CAMERA_NAME);
+    public static final PhotonCamera FRONT_RIGHT_CAMERA = new PhotonCamera(FR_CAMERA_NAME);
+    public static final PhotonCamera BACK_LEFT_CAMERA = new PhotonCamera(BL_CAMERA_NAME);
+    public static final PhotonCamera BACK_RIGHT_CAMERA = new PhotonCamera(BR_CAMERA_NAME);
+
+    public static final Transform3d FRONT_LEFT_CAMERA_LOCATION = 
+      new Transform3d(
+                    new Translation3d(0.288, 0.1397, 0.119),
+                    new Rotation3d(0.0, -0.2617, 0.0));
+
+    public static final Transform3d FRONT_RIGHT_CAMERA_LOCATION = 
+      new Transform3d(
+                    new Translation3d(0.288, -0.1397, 0.119),
+                    new Rotation3d(0.0, -0.2617, 0.0));
+
+    public static final Transform3d BACK_LEFT_CAMERA_LOCATION = 
+      new Transform3d(
+                    new Translation3d(-0.196, 0.26, 0.140),
+                    new Rotation3d(0, -1.16, 0.434));
+
+    public static final Transform3d BACK_RIGHT_CAMERA_LOCATION = 
+      new Transform3d(
+                    new Translation3d(-0.196, -0.26, 0.140),
+                    new Rotation3d(0, -1.16, -0.434));
+  }
 
     public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
