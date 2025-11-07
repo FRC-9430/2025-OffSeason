@@ -92,6 +92,10 @@ public class Constants {
                                 new Rotation3d(0, -Math.toRadians(15), -Math.toRadians(45)));
         }
 
+        public static final class AprilTagConstants {
+                public static final Translation3d tag1_translation = new Translation3d(16.4592, 1.524, 0.3302);
+        }
+
         public static final class AutoConstants {
                 public static final double kMaxSpeedMetersPerSecond = 3;
                 public static final double kMaxAccelerationMetersPerSecondSquared = 3;
