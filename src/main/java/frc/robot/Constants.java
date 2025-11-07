@@ -12,8 +12,13 @@ public final class Constants {
     public static final class MotorConstants{
         public static final int IntakeMotorCanID = 41;
         public static final int ShooterMotorCanID = 42;
+        // ToDo get can ID of elevator motors       public static final int ElevatorMotorCanID = ?;
+        // ToDO set elevtor min and max             public static final double kElevatorMaxHeight = ?;     public static final double kElevatorMinHeight = ?;
         public static final double kShooterPivotMaxHeight = .48;
         public static final double kShooterPivotMinHeight = .090;
 
+    }
+    public static final class shooterConstants{
+        public static final int k_operatorControllerPort = 1;
     }
 }
