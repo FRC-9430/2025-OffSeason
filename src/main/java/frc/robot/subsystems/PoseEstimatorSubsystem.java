@@ -30,6 +30,8 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
   private SwerveDriveOdometry m_odometry;
 
+  private CameraPoseEstimation m_cameraPoseEstimation = new CameraPoseEstimation();
+
   /** Creates a new PoseEstimatorSubsystem. */
   public PoseEstimatorSubsystem() {
     m_odometry = new SwerveDriveOdometry(
@@ -100,7 +102,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     private CameraDetection BACK_LEFT_DETECTION;
     private CameraDetection BACK_RIGHT_DETECTION;
 
-    private void logCameraDetection(CameraDetection detection) {
+    public static void logCameraDetection(CameraDetection detection) {
       String cameraName = detection.camera.getName();
       // Update dashboard with camera-specific info.
       SmartDashboard.putBoolean("Camera " + cameraName + " Has Detection", true);
@@ -267,6 +269,105 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       }
     }
 
+    public int getLastDetectedTagId() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection != null ? detection.tagId : -1;
+    }
+
+    public PhotonCamera getLastDetectionCamera() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection.camera;
+    }
+
+    public double getLastDetectionTimestamp() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection != null ? detection.detectionTimestamp : -1.0;
+    }
+
+    /**
+     * Gets the distance to the tag for a specified camera index.
+     * 
+     * @param cameraIndex The index of the camera.
+     * @return The distance to the tag in meters, or NaN if no detection exists.
+     */
+    public double getDistanceToTag(PhotonCamera camera) {
+      CameraDetection detection = getDetectionOf(camera);
+      return detection != null ? detection.distanceToTag : Double.NaN;
+    }
+
+    /**
+     * Gets the lateral offset to the tag for a specified camera index.
+     * 
+     * @param cameraIndex The index of the camera.
+     * @return The lateral offset in meters, or NaN if no detection exists.
+     */
+    public double getLateralOffsetToTag(PhotonCamera camera) {
+      CameraDetection detection = getDetectionOf(camera);
+      return detection != null ? detection.lateralOffsetToTag : Double.NaN;
+    }
+
+    /**
+     * Angle from robot's forward axis to the tag's position. Positive means tag is
+     * to the left.
+     */
+    public double getBearingToTagDeg() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection != null ? detection.bearingToTagDeg : Double.NaN;
+    }
+
+    public double getBearingToTagDeg(PhotonCamera camera) {
+      CameraDetection detection = getDetectionOf(camera);
+      return detection != null ? detection.bearingToTagDeg : Double.NaN;
+    }
+
+    /**
+     * The tag's orientation relative to the robot. 0° means tag and robot are
+     * parallel.
+     */
+    public double getTagOrientationErrorDeg() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection != null ? detection.tagOrientationErrorDeg : Double.NaN;
+    }
+
+    public double getTagOrientationErrorDeg(PhotonCamera camera) {
+      CameraDetection detection = getDetectionOf(camera);
+      return detection != null ? detection.tagOrientationErrorDeg : Double.NaN;
+    }
+
+    /**
+     * Gets the X offset to the tag from the most recent detection.
+     * 
+     * @return The X offset in meters.
+     */
+    public double getXOffsetToTag() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection != null ? detection.xOffsetToTag : Double.NaN;
+    }
+
+    public double getXOffsetToTag(PhotonCamera camera) {
+      CameraDetection detection = getDetectionOf(camera);
+      return detection != null ? detection.xOffsetToTag : Double.NaN;
+    }
+
+    /**
+     * Gets the X offset to the tag from the most recent detection.
+     * 
+     * @return The X offset in meters.
+     */
+    public double getYOffsetToTag() {
+      CameraDetection detection = getMostRecentDetection();
+      return detection != null ? detection.yOffsetToTag : Double.NaN;
+    }
+
+    public double getYOffsetToTag(PhotonCamera camera) {
+      CameraDetection detection = getDetectionOf(camera);
+      return detection != null ? detection.yOffsetToTag : Double.NaN;
+    }
+
+    public Pose2d getEstimatedPose() {
+      return poseEstimator.getPoseMeters();
+    }
+
     /**
      * Class for handling camera detections.
      */
@@ -298,6 +399,5 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         this.camera = camera;
       }
     }
-
   }
 }
