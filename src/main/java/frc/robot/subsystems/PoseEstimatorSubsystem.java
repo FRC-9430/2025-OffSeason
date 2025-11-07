@@ -8,6 +8,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.utils.AprilTagInfo;
 
 /**
  * Pose estimation subsyestem designed to overwrite the default swerve odometry
@@ -372,14 +374,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       double yOffsetToCamera = latestDetection.yOffsetToTag;
       double xOffsetToCamera = latestDetection.xOffsetToTag;
 
-      switch (camera.getName()) {
-        case VisionConstants.FL_CAMERA_NAME:
-          yOffsetToCamera += VisionConstants.FRONT_LEFT_CAMERA_LOCATION.getY();
-          break;
-      
-        default:
-          break;
-      }
+      Translation3d tagTranslation = AprilTagInfo.getTranslation3d(latestDetection.tagId);
 
       //TODO implement math after getting tag infomation
       return new Pose2d();
