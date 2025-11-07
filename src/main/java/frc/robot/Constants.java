@@ -18,7 +18,12 @@ public final class Constants {
         public static final double kShooterPivotMinHeight = .090;
 
     }
-    public static final class shooterConstants{
-        public static final int k_operatorControllerPort = 1;
+    public static final class PIDConstants{
+        public static final double kShooterkp = 0.1; //TODO: set PID values
+        public static final double kShooterki = 0;
+        public static final double kShooterkd = 0;
+        public static final double kTransitSetpoint = .255;
+        public static final double kIntakeSetpoint = .2;
+        public static final double kScoreSetpoint = .1;
     }
 }

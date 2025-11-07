@@ -6,12 +6,16 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants.MotorConstants;
+import frc.robot.Constants.PIDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
+  //PID controller
+  private PIDController pidController;
 
   // Declare motors for shooter
   private SparkMax intakeMotor;
@@ -23,6 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
     intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID, SparkMax.MotorType.kBrushless);
     shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID, SparkMax.MotorType.kBrushless);
     shooterEncoder = shooterMotor.getAbsoluteEncoder();
+    pidController = new PIDController(PIDConstants.kShooterkp, PIDConstants.kShooterki, PIDConstants.kShooterkd);
+    setShooterPosition(PIDConstants.kTransitSetpoint);
   }
 
   public void runIntake(double speed) {
@@ -43,6 +49,11 @@ public class ShooterSubsystem extends SubsystemBase {
     // shooterMotor.stopMotor();
   }
 
+  public void setShooterPosition(double position){
+    pidController.reset();
+    pidController.setSetpoint(position);
+  }
+
   public void stopShooter() {
     shooterMotor.stopMotor();
   }
@@ -51,5 +62,6 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setShooterSpeed(pidController.calculate(shooterEncoder.getPosition()));
   }
 }
