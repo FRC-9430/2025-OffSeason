@@ -264,19 +264,19 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       PhotonCamera camera;
 
       public CameraDetection(int tagId, double detectionTimestamp, Rotation2d detectionHeading,
-              double distanceToTag, double bearingToTagDeg, double lateralOffsetToTag,
-              double xOffsetToTag, double yOffsetToTag, double tagOrientationErrorDeg,
-              PhotonCamera camera) {
-          this.tagId = tagId;
-          this.detectionTimestamp = detectionTimestamp;
-          this.detectionHeading = detectionHeading;
-          this.distanceToTag = distanceToTag;
-          this.bearingToTagDeg = bearingToTagDeg;
-          this.lateralOffsetToTag = lateralOffsetToTag;
-          this.xOffsetToTag = xOffsetToTag;
-          this.yOffsetToTag = yOffsetToTag;
-          this.tagOrientationErrorDeg = tagOrientationErrorDeg;
-          this.camera = camera;
+          double distanceToTag, double bearingToTagDeg, double lateralOffsetToTag,
+          double xOffsetToTag, double yOffsetToTag, double tagOrientationErrorDeg,
+          PhotonCamera camera) {
+        this.tagId = tagId;
+        this.detectionTimestamp = detectionTimestamp;
+        this.detectionHeading = detectionHeading;
+        this.distanceToTag = distanceToTag;
+        this.bearingToTagDeg = bearingToTagDeg;
+        this.lateralOffsetToTag = lateralOffsetToTag;
+        this.xOffsetToTag = xOffsetToTag;
+        this.yOffsetToTag = yOffsetToTag;
+        this.tagOrientationErrorDeg = tagOrientationErrorDeg;
+        this.camera = camera;
       }
     }
 
