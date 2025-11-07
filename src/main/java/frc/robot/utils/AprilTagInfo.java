@@ -5,7 +5,7 @@ import frc.robot.Constants.AprilTagConstants;
 
 public class AprilTagInfo {
 
-    public static Translation3d GetTranslation3d(int id) {
+    public static Translation3d getTranslation3d(int id) {
         switch (id) {
             case 1:
                 return AprilTagConstants.tag1_translation3d;
