@@ -43,6 +43,14 @@ public class AprilTagInfo {
                 return AprilTagConstants.tag17_translation3d;
             case 18:
                 return AprilTagConstants.tag18_translation3d;
+            case 19:
+                return AprilTagConstants.tag19_translation3d;
+            case 20:
+                return AprilTagConstants.tag20_translation3d;
+            case 21:
+                return AprilTagConstants.tag21_translation3d;
+            case 22:
+                return AprilTagConstants.tag22_translation3d;
             default:
                 return new Translation3d();
         }

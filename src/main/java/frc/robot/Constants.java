@@ -112,6 +112,11 @@ public class Constants {
                 public static final Translation3d tag16_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
                 public static final Translation3d tag17_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
                 public static final Translation3d tag18_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag19_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag20_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag21_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag22_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+
         }
 
         public static final class AutoConstants {
