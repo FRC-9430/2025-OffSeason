@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import frc.robot.Constants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -14,44 +13,55 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  public static CommandXboxController k_operatorControllerPort = new CommandXboxController(
-      OIConstants.k_operatorControllerPort);
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    public static CommandXboxController c_operatorController = new CommandXboxController(OIConstants.k_operatorControllerPort);
+    public RobotContainer() {
+        configureBindings();
+    }
 
-  public RobotContainer() {
-    configureBindings();
-  }
+    private void configureBindings() {
 
-  private void configureBindings() {
+    c_operatorController.a()
+    .whileTrue(new InstantCommand(() -> { 
+      shooterSubsystem.runIntake(.1);
+    })) .onFalse(new InstantCommand(() -> { 
+        shooterSubsystem.stopIntake();
+      }));
 
-    k_operatorControllerPort.a()
-        .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.runIntake(.3);
-        })).onFalse(new InstantCommand(() -> {
-          shooterSubsystem.stopIntake();
-        }));
+      c_operatorController.b()
+    .whileTrue(new InstantCommand(() -> { 
+      shooterSubsystem.runIntake(-.1);
+    })) .onFalse(new InstantCommand(() -> { 
+        shooterSubsystem.stopIntake();
+        
+      }));
+<<<<<<< HEAD
 
-    k_operatorControllerPort.b()
-        .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.runIntake(-.3);
-        })).onFalse(new InstantCommand(() -> {
-          shooterSubsystem.stopIntake();
-        }));
-    k_operatorControllerPort.x()
-        .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.setShooterSpeed(-.1);
-        })).onFalse(new InstantCommand(()->{
-          shooterSubsystem.stopShooter();
-        }));
-    k_operatorControllerPort.y()
-        .whileTrue(new InstantCommand(() -> {
-          shooterSubsystem.setShooterSpeed(.1);
-        })).onFalse(new InstantCommand(()->{
-          shooterSubsystem.stopShooter();
-        }));
-  }
+    c_operatorController.x()
+    .whileTrue(new InstantCommand(() -> { 
+      shooterSubsystem.setShooterSpeed(.1);
+    })) .onFalse(new InstantCommand(() -> { 
+        shooterSubsystem.setShooterSpeed(0);
+          
+      }));
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+
+
+
+=======
+      c_operatorController.x()
+.onTrue(new InstantCommand(() -> {
+  shooterSubsystem.setShooterPosition(0.3);
+}));
+c_operatorController.y()
+.onTrue(new InstantCommand(() -> {
+  shooterSubsystem.setShooterPosition(0.15);
+}));
+>>>>>>> a891440c094cdb2f85c666a611125de33355cf41
+    }
+    
+
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
+    }
 }
