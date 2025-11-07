@@ -6,7 +6,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -93,30 +92,116 @@ public class Constants {
         }
 
         public static final class AprilTagConstants {
-                // TODO set values based on current field layout
-                public static final Translation3d tag1_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag2_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag3_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag4_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag5_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag6_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag7_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag8_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag9_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag10_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag11_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag12_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag13_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag14_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag15_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag16_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag17_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag18_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag19_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag20_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag21_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
-                public static final Translation3d tag22_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
 
+                public static final Transform3d tag1_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(657.37), Units.inchesToMeters(25.80),
+                                                Units.inchesToMeters(58.50)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(126)));
+
+                public static final Transform3d tag2_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(657.37), Units.inchesToMeters(291.20),
+                                                Units.inchesToMeters(58.50)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(234)));
+
+                public static final Transform3d tag3_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(455.15), Units.inchesToMeters(317.15),
+                                                Units.inchesToMeters(51.25)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(270)));
+
+                public static final Transform3d tag4_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(365.20), Units.inchesToMeters(241.64),
+                                                Units.inchesToMeters(73.54)),
+                                new Rotation3d(0, Math.toRadians(30), Math.toRadians(0)));
+
+                public static final Transform3d tag5_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(365.20), Units.inchesToMeters(75.39),
+                                                Units.inchesToMeters(73.54)),
+                                new Rotation3d(0, Math.toRadians(30), Math.toRadians(0)));
+
+                public static final Transform3d tag6_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(300)));
+
+                public static final Transform3d tag7_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(0)));
+
+                public static final Transform3d tag8_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(60)));
+
+                public static final Transform3d tag9_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(497.77), Units.inchesToMeters(186.83),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(120)));
+
+                public static final Transform3d tag10_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(180)));
+
+                public static final Transform3d tag11_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(240)));
+
+                public static final Transform3d tag12_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(33.51), Units.inchesToMeters(25.80),
+                                                Units.inchesToMeters(58.50)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(54)));
+
+                public static final Transform3d tag13_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(33.51), Units.inchesToMeters(291.20),
+                                                Units.inchesToMeters(58.50)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(306)));
+
+                public static final Transform3d tag14_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(325.68), Units.inchesToMeters(241.64),
+                                                Units.inchesToMeters(73.54)),
+                                new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)));
+
+                public static final Transform3d tag15_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(325.68), Units.inchesToMeters(75.39),
+                                                Units.inchesToMeters(73.54)),
+                                new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)));
+
+                public static final Transform3d tag16_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(235.73), Units.inchesToMeters(-0.15),
+                                                Units.inchesToMeters(51.25)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(90)));
+
+                public static final Transform3d tag17_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(240)));
+
+                public static final Transform3d tag18_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(180)));
+
+                public static final Transform3d tag19_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(120)));
+
+                public static final Transform3d tag20_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.83),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(60)));
+
+                public static final Transform3d tag21_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(0)));
+
+                public static final Transform3d tag22_transformation3d = new Transform3d(
+                                new Translation3d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17),
+                                                Units.inchesToMeters(12.13)),
+                                new Rotation3d(0, Math.toRadians(0), Math.toRadians(300)));
         }
 
         public static final class AutoConstants {
