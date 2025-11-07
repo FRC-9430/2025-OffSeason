@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonCamera;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -86,4 +88,38 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  
+  /**
+   * Class for handling camera detections.
+   */
+  private static class CameraDetection {
+    int tagId;
+    double detectionTimestamp;
+    Rotation2d detectionHeading;
+    double distanceToTag;
+    double bearingToTagDeg;
+    double lateralOffsetToTag;
+    double xOffsetToTag;
+    double yOffsetToTag;
+    double tagOrientationErrorDeg;
+    PhotonCamera camera;
+
+    public CameraDetection(int tagId, double detectionTimestamp, Rotation2d detectionHeading,
+            double distanceToTag, double bearingToTagDeg, double lateralOffsetToTag,
+            double xOffsetToTag, double yOffsetToTag, double tagOrientationErrorDeg,
+            PhotonCamera camera) {
+        this.tagId = tagId;
+        this.detectionTimestamp = detectionTimestamp;
+        this.detectionHeading = detectionHeading;
+        this.distanceToTag = distanceToTag;
+        this.bearingToTagDeg = bearingToTagDeg;
+        this.lateralOffsetToTag = lateralOffsetToTag;
+        this.xOffsetToTag = xOffsetToTag;
+        this.yOffsetToTag = yOffsetToTag;
+        this.tagOrientationErrorDeg = tagOrientationErrorDeg;
+        this.camera = camera;
+    }
+  }
+
 }
