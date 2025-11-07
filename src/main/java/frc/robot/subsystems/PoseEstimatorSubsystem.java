@@ -22,8 +22,6 @@ import frc.robot.Constants.DriveConstants;
  */
 public class PoseEstimatorSubsystem extends SubsystemBase {
 
-  private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.pigeon2CanID);
-
   private SwerveDriveOdometry m_odometry;
 
   /** Creates a new PoseEstimatorSubsystem. */
