@@ -248,6 +248,25 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       return mostRecent;
     }
 
+    private CameraDetection getDetectionOf(PhotonCamera camera) {
+      switch (camera.getName()) {
+        case VisionConstants.FL_CAMERA_NAME:
+          return FRONT_LEFT_DETECTION;
+
+        case VisionConstants.FR_CAMERA_NAME:
+          return FRONT_RIGHT_DETECTION;
+
+        case VisionConstants.BL_CAMERA_NAME:
+          return BACK_LEFT_DETECTION;
+
+        case VisionConstants.BR_CAMERA_NAME:
+          return BACK_RIGHT_DETECTION;
+
+        default:
+          return null;
+      }
+    }
+
     /**
      * Class for handling camera detections.
      */
