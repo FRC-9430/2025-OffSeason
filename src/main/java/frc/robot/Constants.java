@@ -93,7 +93,25 @@ public class Constants {
         }
 
         public static final class AprilTagConstants {
-                public static final Translation3d tag1_translation = new Translation3d(16.4592, 1.524, 0.3302);
+                // TODO set values based on current field layout
+                public static final Translation3d tag1_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag2_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag3_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag4_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag5_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag6_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag7_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag8_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag9_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag10_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag11_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag12_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag13_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag14_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag15_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag16_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag17_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
+                public static final Translation3d tag18_translation3d = new Translation3d(16.4592, 1.524, 0.3302);
         }
 
         public static final class AutoConstants {
