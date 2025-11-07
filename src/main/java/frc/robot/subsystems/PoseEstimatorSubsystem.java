@@ -94,6 +94,160 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
   }
 
   private class CameraPoseEstimation {
+
+    private CameraDetection FRONT_LEFT_DETECTION;
+    private CameraDetection FRONT_RIGHT_DETECTION;
+    private CameraDetection BACK_LEFT_DETECTION;
+    private CameraDetection BACK_RIGHT_DETECTION;
+
+    private void logCameraDetection(CameraDetection detection) {
+      String cameraName = detection.camera.getName();
+      // Update dashboard with camera-specific info.
+      SmartDashboard.putBoolean("Camera " + cameraName + " Has Detection", true);
+      SmartDashboard.putNumber("Camera " + cameraName + " Last Detection Time", detection.detectionTimestamp);
+      SmartDashboard.putNumber("Camera " + cameraName + " Last Tag ID", detection.tagId);
+      SmartDashboard.putNumber("Camera " + cameraName + " DistanceToTag", detection.distanceToTag);
+      SmartDashboard.putNumber("Camera " + cameraName + " Tag Bearing (Deg)", detection.bearingToTagDeg);
+      SmartDashboard.putNumber("Camera " + cameraName + " Tag Orientation Error (Deg)",
+          detection.tagOrientationErrorDeg);
+      SmartDashboard.putNumber("Camera " + cameraName + " LateralOffsetToTag", detection.lateralOffsetToTag);
+      SmartDashboard.putNumber("Camera " + cameraName + " xOffsetToTag", detection.xOffsetToTag);
+      SmartDashboard.putNumber("Camera " + cameraName + " yOffsetToTag", detection.yOffsetToTag);
+    }
+
+    public void updateDetections(Rotation2d gyroRotation) {
+      /*
+       * FRONT LEFT CAMERA
+       */
+
+      PhotonPipelineResult FL_result = VisionConstants.FRONT_LEFT_CAMERA.getLatestResult();
+      PhotonTrackedTarget FL_bestTarget = FL_result.getBestTarget();
+      Transform3d FL_cameraToTarget = (FL_bestTarget != null) ? FL_bestTarget.getBestCameraToTarget()
+          : new Transform3d();
+      Transform3d FL_robotToTarget = VisionConstants.FRONT_LEFT_CAMERA_LOCATION.plus(FL_cameraToTarget);
+      Translation3d FL_translation = FL_robotToTarget.getTranslation();
+      Rotation3d FL_rotation = FL_robotToTarget.getRotation();
+
+      // Create and store detection info for this camera.
+      CameraDetection FL_detection = new CameraDetection(
+          (FL_bestTarget != null) ? FL_bestTarget.getFiducialId() : -1,
+          FL_result.getTimestampSeconds(),
+          gyroRotation,
+          FL_translation.getMeasureX().in(Meter),
+          FL_rotation.getMeasureZ().in(Degree),
+          FL_translation.getMeasureY().in(Meter),
+          FL_cameraToTarget.getTranslation().getX(),
+          FL_cameraToTarget.getTranslation().getY(),
+          FL_rotation.getMeasureZ().in(Degree),
+          VisionConstants.FRONT_LEFT_CAMERA);
+
+      FRONT_LEFT_DETECTION = FL_detection;
+      logCameraDetection(FRONT_LEFT_DETECTION);
+
+      /*
+       * FRONT RIGHT CAMERA
+       */
+
+      PhotonPipelineResult FR_result = VisionConstants.FRONT_RIGHT_CAMERA.getLatestResult();
+      PhotonTrackedTarget FR_bestTarget = FR_result.getBestTarget();
+      Transform3d FR_cameraToTarget = (FR_bestTarget != null) ? FR_bestTarget.getBestCameraToTarget()
+          : new Transform3d();
+      Transform3d FR_robotToTarget = VisionConstants.FRONT_RIGHT_CAMERA_LOCATION.plus(FR_cameraToTarget);
+      Translation3d FR_translation = FR_robotToTarget.getTranslation();
+      Rotation3d FR_rotation = FR_robotToTarget.getRotation();
+
+      // Create and store detection info for this camera.
+      CameraDetection FR_detection = new CameraDetection(
+          (FR_bestTarget != null) ? FR_bestTarget.getFiducialId() : -1,
+          FR_result.getTimestampSeconds(),
+          gyroRotation,
+          FR_translation.getMeasureX().in(Meter),
+          FR_rotation.getMeasureZ().in(Degree),
+          FR_translation.getMeasureY().in(Meter),
+          FR_cameraToTarget.getTranslation().getX(),
+          FR_cameraToTarget.getTranslation().getY(),
+          FR_rotation.getMeasureZ().in(Degree),
+          VisionConstants.FRONT_RIGHT_CAMERA);
+
+      FRONT_RIGHT_DETECTION = FR_detection;
+      logCameraDetection(FRONT_RIGHT_DETECTION);
+
+      /*
+       * BACK LEFT CAMERA
+       */
+
+      PhotonPipelineResult BL_result = VisionConstants.BACK_LEFT_CAMERA.getLatestResult();
+      PhotonTrackedTarget BL_bestTarget = BL_result.getBestTarget();
+      Transform3d BL_cameraToTarget = (BL_bestTarget != null) ? BL_bestTarget.getBestCameraToTarget()
+          : new Transform3d();
+      Transform3d BL_robotToTarget = VisionConstants.BACK_LEFT_CAMERA_LOCATION.plus(BL_cameraToTarget);
+      Translation3d BL_translation = BL_robotToTarget.getTranslation();
+      Rotation3d BL_rotation = BL_robotToTarget.getRotation();
+
+      // Create and store detection info for this camera.
+      CameraDetection BL_detection = new CameraDetection(
+          (BL_bestTarget != null) ? BL_bestTarget.getFiducialId() : -1,
+          BL_result.getTimestampSeconds(),
+          gyroRotation,
+          BL_translation.getMeasureX().in(Meter),
+          BL_rotation.getMeasureZ().in(Degree),
+          BL_translation.getMeasureY().in(Meter),
+          BL_cameraToTarget.getTranslation().getX(),
+          BL_cameraToTarget.getTranslation().getY(),
+          BL_rotation.getMeasureZ().in(Degree),
+          VisionConstants.BACK_LEFT_CAMERA);
+
+      BACK_LEFT_DETECTION = BL_detection;
+      logCameraDetection(BACK_LEFT_DETECTION);
+
+      /*
+       * BACK RIGHT CAMERA
+       */
+
+      PhotonPipelineResult BR_result = VisionConstants.BACK_RIGHT_CAMERA.getLatestResult();
+      PhotonTrackedTarget BR_bestTarget = BR_result.getBestTarget();
+      Transform3d BR_cameraToTarget = (BR_bestTarget != null) ? BR_bestTarget.getBestCameraToTarget()
+          : new Transform3d();
+      Transform3d BR_robotToTarget = VisionConstants.BACK_RIGHT_CAMERA_LOCATION.plus(BR_cameraToTarget);
+      Translation3d BR_translation = BR_robotToTarget.getTranslation();
+      Rotation3d BR_rotation = BR_robotToTarget.getRotation();
+
+      // Create and store detection info for this camera.
+      CameraDetection BR_detection = new CameraDetection(
+          (BR_bestTarget != null) ? BR_bestTarget.getFiducialId() : -1,
+          BR_result.getTimestampSeconds(),
+          gyroRotation,
+          BR_translation.getMeasureX().in(Meter),
+          BR_rotation.getMeasureZ().in(Degree),
+          BR_translation.getMeasureY().in(Meter),
+          BR_cameraToTarget.getTranslation().getX(),
+          BR_cameraToTarget.getTranslation().getY(),
+          BR_rotation.getMeasureZ().in(Degree),
+          VisionConstants.BACK_RIGHT_CAMERA);
+
+      BACK_RIGHT_DETECTION = BR_detection;
+      logCameraDetection(BACK_RIGHT_DETECTION);
+    }
+
+    // Helper method to get the most recent detection across all cameras.
+    private CameraDetection getMostRecentDetection() {
+      CameraDetection[] detections = {
+          FRONT_LEFT_DETECTION,
+          FRONT_RIGHT_DETECTION,
+          BACK_LEFT_DETECTION,
+          BACK_RIGHT_DETECTION
+      };
+      CameraDetection mostRecent = FRONT_LEFT_DETECTION;
+      for (CameraDetection detection : detections) {
+        if (detection != null) {
+          if (mostRecent == null || detection.detectionTimestamp > mostRecent.detectionTimestamp) {
+            mostRecent = detection;
+          }
+        }
+      }
+      return mostRecent;
+    }
+
     /**
      * Class for handling camera detections.
      */
