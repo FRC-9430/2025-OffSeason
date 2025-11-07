@@ -53,8 +53,8 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
    * 
    * @param swervePositions
    */
-  public void update(SwerveModulePosition[] swervePositions) {
-    m_odometry.update(m_gyro.getRotation2d(), swervePositions);
+  public void update(Rotation2d rotation, SwerveModulePosition[] swervePositions) {
+    m_odometry.update(rotation, swervePositions);
   }
 
   /**
@@ -89,37 +89,38 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  
-  /**
-   * Class for handling camera detections.
-   */
-  private static class CameraDetection {
-    int tagId;
-    double detectionTimestamp;
-    Rotation2d detectionHeading;
-    double distanceToTag;
-    double bearingToTagDeg;
-    double lateralOffsetToTag;
-    double xOffsetToTag;
-    double yOffsetToTag;
-    double tagOrientationErrorDeg;
-    PhotonCamera camera;
+  private class CameraPoseEstimation {
+    /**
+     * Class for handling camera detections.
+     */
+    private static class CameraDetection {
+      int tagId;
+      double detectionTimestamp;
+      Rotation2d detectionHeading;
+      double distanceToTag;
+      double bearingToTagDeg;
+      double lateralOffsetToTag;
+      double xOffsetToTag;
+      double yOffsetToTag;
+      double tagOrientationErrorDeg;
+      PhotonCamera camera;
 
-    public CameraDetection(int tagId, double detectionTimestamp, Rotation2d detectionHeading,
-            double distanceToTag, double bearingToTagDeg, double lateralOffsetToTag,
-            double xOffsetToTag, double yOffsetToTag, double tagOrientationErrorDeg,
-            PhotonCamera camera) {
-        this.tagId = tagId;
-        this.detectionTimestamp = detectionTimestamp;
-        this.detectionHeading = detectionHeading;
-        this.distanceToTag = distanceToTag;
-        this.bearingToTagDeg = bearingToTagDeg;
-        this.lateralOffsetToTag = lateralOffsetToTag;
-        this.xOffsetToTag = xOffsetToTag;
-        this.yOffsetToTag = yOffsetToTag;
-        this.tagOrientationErrorDeg = tagOrientationErrorDeg;
-        this.camera = camera;
+      public CameraDetection(int tagId, double detectionTimestamp, Rotation2d detectionHeading,
+              double distanceToTag, double bearingToTagDeg, double lateralOffsetToTag,
+              double xOffsetToTag, double yOffsetToTag, double tagOrientationErrorDeg,
+              PhotonCamera camera) {
+          this.tagId = tagId;
+          this.detectionTimestamp = detectionTimestamp;
+          this.detectionHeading = detectionHeading;
+          this.distanceToTag = distanceToTag;
+          this.bearingToTagDeg = bearingToTagDeg;
+          this.lateralOffsetToTag = lateralOffsetToTag;
+          this.xOffsetToTag = xOffsetToTag;
+          this.yOffsetToTag = yOffsetToTag;
+          this.tagOrientationErrorDeg = tagOrientationErrorDeg;
+          this.camera = camera;
+      }
     }
-  }
 
+  }
 }
