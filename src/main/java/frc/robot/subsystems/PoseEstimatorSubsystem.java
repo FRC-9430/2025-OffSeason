@@ -365,7 +365,24 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     }
 
     public Pose2d getEstimatedPose() {
-      return poseEstimator.getPoseMeters();
+
+      CameraDetection latestDetection = getMostRecentDetection();
+      PhotonCamera camera = latestDetection.camera;
+
+      double yOffsetToCamera = latestDetection.yOffsetToTag;
+      double xOffsetToCamera = latestDetection.xOffsetToTag;
+
+      switch (camera.getName()) {
+        case VisionConstants.FL_CAMERA_NAME:
+          yOffsetToCamera += VisionConstants.FRONT_LEFT_CAMERA_LOCATION.getY();
+          break;
+      
+        default:
+          break;
+      }
+
+      //TODO implement math after getting tag infomation
+      return new Pose2d();
     }
 
     /**
