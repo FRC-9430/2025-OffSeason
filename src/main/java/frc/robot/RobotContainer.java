@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import frc.robot.Constants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -13,13 +14,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    public static CommandXboxController c_operatorController = new CommandXboxController(OIConstants.k_operatorControllerPort);
-    public RobotContainer() {
-        configureBindings();
-    }
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  public static CommandXboxController c_operatorController = new CommandXboxController(
+      OIConstants.k_operatorControllerPort);
 
-    private void configureBindings() {
+  public RobotContainer() {
+    configureBindings();
+  }
+
+  private void configureBindings() {
 
     c_operatorController.a()
     .whileTrue(new InstantCommand(() -> { 
@@ -44,13 +47,17 @@ public class RobotContainer {
           
       }));
 
+    c_operatorController.y()
+    .onTrue(new InstantCommand(() -> {
+      shooterSubsystem.toggleAutonomousMovement();
+    }));
+
 
 
 
     }
-    
 
-    public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
-    }
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
 }

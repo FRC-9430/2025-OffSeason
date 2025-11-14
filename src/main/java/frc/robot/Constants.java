@@ -26,7 +26,6 @@ public final class Constants {
         public static final double kElevatorkp = 0.1; //TO DO: set elevator PID values
         public static final double kElevatorki = 0;
         public static final double kElevatorkd = 0;
-        public static final double kTransitSetpoint = .255;
         public static final double kIntakeSetpoint = .2;
         public static final double kScoreSetpoint = .1;
     }
