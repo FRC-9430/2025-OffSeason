@@ -17,7 +17,7 @@ public final class Constants {
 
     }
     public static final class PIDConstants{
-        public static final double kShooterkp = 0.1; //TODO: set PID values
+        public static final double kShooterkp = 0.; //TODO: set PID values
         public static final double kShooterki = 0;
         public static final double kShooterkd = 0;
         public static final double kTransitSetpoint = .255;

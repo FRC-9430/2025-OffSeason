@@ -27,7 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID, SparkMax.MotorType.kBrushless);
     shooterEncoder = shooterMotor.getAbsoluteEncoder();
     pidController = new PIDController(PIDConstants.kShooterkp, PIDConstants.kShooterki, PIDConstants.kShooterkd);
-    setShooterPosition(PIDConstants.kTransitSetpoint);
+    //setShooterPosition(PIDConstants.kTransitSetpoint);
   }
 
   public void runIntake(double speed) {
@@ -39,12 +39,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
-    if (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight 
-        && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight ) {
+    //if (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight 
+       // && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight ) {
           shooterMotor.set(speed);
-    }else{
-      stopShooter();
-    }
+    
+        //}else{
+      //stopShooter();
+   // }
     // shooterMotor.stopMotor();
   }
 
@@ -61,6 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    setShooterSpeed(pidController.calculate(shooterEncoder.getPosition()));
+    pidController.setSetpoint(PIDConstants.kTransitSetpoint);
+    setShooterSpeed(-pidController.calculate(shooterEncoder.getPosition()));
   }
 }
