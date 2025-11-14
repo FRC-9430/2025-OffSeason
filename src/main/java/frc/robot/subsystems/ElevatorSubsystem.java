@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants.MotorConstants;
+import frc.robot.Constants.PIDConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -18,12 +19,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   private AbsoluteEncoder elevatorEncoder;
 
 // new PIDcontroller for elevator system
-  private PIDController elevatorController;
+  private PIDController elevatorController = new PIDController (PIDConstants.kElevatorkp, PIDConstants.kElevatorki, PIDConstants.kElevatorkd);
 
   /** Creates a new ElevatorSubsystem
    *. */
-  public ElevatorSubsystem
-() {
+  public ElevatorSubsystem() {
   // Need to retrive the Can ID from the elevator motor and then put it in constants
     ElevatorMotor = new SparkMax(MotorConstants.ElevatorMotorCanID, SparkMax.MotorType.kBrushless);
     elevatorEncoder = ElevatorMotor.getAbsoluteEncoder();
@@ -51,19 +51,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void stopElevator() {
     ElevatorMotor.stopMotor();
   }
-
-// elevator PID
-elevatorController = new PIDController (kElevatorkp, kElevatorki, kElevatorkd);
-
-
-
-
-
-
-
-
-
-
 
   @Override
   public void periodic() {
