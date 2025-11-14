@@ -13,7 +13,8 @@ public final class Constants {
         public static final int IntakeMotorCanID = 41;
         public static final int ShooterMotorCanID = 42;
         public static final int ElevatorMotorCanID = 27;
-        // ToDO set elevtor min and max             public static final double kElevatorMaxHeight = ?;     public static final double kElevatorMinHeight = ?;
+        public static final double kElevatorMaxHeight = 0; //TODO set value    
+        public static final double kElevatorMinHeight = 0; //TODO set value
         public static final double kShooterPivotMaxHeight = .48;
         public static final double kShooterPivotMinHeight = .090;
 
