@@ -130,7 +130,6 @@ public class Constants {
             public static final double kDrivingMotorFreeSpeedRps = 6784 / 60;
             public static final double kWheelDiameterMeters = 0.1016;
             public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-            // teeth on the bevel pinion
             public static final double kDrivingMotorReduction = 6.39;
             public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
                 / kDrivingMotorReduction;
