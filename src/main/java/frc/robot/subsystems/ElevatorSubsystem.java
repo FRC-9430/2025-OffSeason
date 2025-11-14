@@ -17,6 +17,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   private SparkMax ElevatorMotor;
   private AbsoluteEncoder elevatorEncoder;
 
+// new PIDcontroller for elevator system
+  private PIDController elevatorController;
+
   /** Creates a new ElevatorSubsystem
    *. */
   public ElevatorSubsystem
@@ -48,6 +51,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void stopElevator() {
     ElevatorMotor.stopMotor();
   }
+
+// elevator PID
+elevatorController = new PIDController (kElevatorkp, kElevatorki, kElevatorkd);
+
+
+
+
+
+
+
+
+
 
 
   @Override
