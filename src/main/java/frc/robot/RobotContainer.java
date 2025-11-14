@@ -35,7 +35,6 @@ public class RobotContainer {
         shooterSubsystem.stopIntake();
         
       }));
-<<<<<<< HEAD
 
     c_operatorController.x()
     .whileTrue(new InstantCommand(() -> { 
@@ -48,16 +47,6 @@ public class RobotContainer {
 
 
 
-=======
-      c_operatorController.x()
-.onTrue(new InstantCommand(() -> {
-  shooterSubsystem.setShooterPosition(0.3);
-}));
-c_operatorController.y()
-.onTrue(new InstantCommand(() -> {
-  shooterSubsystem.setShooterPosition(0.15);
-}));
->>>>>>> a891440c094cdb2f85c666a611125de33355cf41
     }
     
 
