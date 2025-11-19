@@ -1,15 +1,22 @@
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 //apologies for any errors or way wonky code </3 i only halfway knew what i was doing in any of this
-
-//initial camera setup
-        PhotonCamera camera = new PhotonCamera("photoncamera");
-
-
+public class AprilTagSubsystem{
+    PhotonCamera camera = new PhotonCamera("Arducam_1");
+    PhotonPipelineResult latestResult;
+    
+    
+    public AprilTagSubsystem() {
+        
+        //initial camera setup
+        
 //tags, tracking, and targets
 
     //query the latest result from photonvision
-        var result = camera.getLatestResult();
+    PhotonPipelineResult result = camera.getLatestResult();
 
     //check latest result for targets
         boolean hasTargets = result.hasTargets();
@@ -43,3 +50,26 @@ package frc.robot.subsystems;
       
     //calculating distance between two poses
          double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
+
+    }
+
+
+void getLatestResults(){
+PhotonPipelineResult res = camera.getLatestResult();
+
+if (res.hasTargets()) {
+    latestResult = res;
+}
+
+}
+
+void printLatestResult() {
+System.out.println(latestResult.getBestTarget().yaw);
+System.out.println(latestResult.getBestTarget().pitch);
+System.out.println(latestResult.getBestTarget().area);
+System.out.println(latestResult.getBestTarget().skew);
+
+}
+
+
+}
