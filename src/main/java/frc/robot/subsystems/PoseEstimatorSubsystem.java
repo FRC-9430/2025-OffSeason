@@ -90,7 +90,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
    * @return
    */
   private Pose2d getCameraEstimatedPose() {
-    return new Pose2d();
+    return m_cameraPoseEstimation.getEstimatedPose();
   }
 
   @Override

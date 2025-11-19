@@ -91,20 +91,21 @@ public class Constants {
                                 new Rotation3d(0, -Math.toRadians(15), -Math.toRadians(45)));
 
                 public static final Transform3d getTransformOf(PhotonCamera camera) {
-                        if (camera.getName() == VisionConstants.FL_CAMERA_NAME) {
-                                return FRONT_LEFT_CAMERA_LOCATION;
+                        switch (camera.getName()) {
+                                case FL_CAMERA_NAME:
+                                        return FRONT_LEFT_CAMERA_LOCATION;
 
-                        } else if (camera.getName() == VisionConstants.FR_CAMERA_NAME) {
-                                return FRONT_LEFT_CAMERA_LOCATION;
+                                case FR_CAMERA_NAME:
+                                        return FRONT_RIGHT_CAMERA_LOCATION;
 
-                        } else if (camera.getName() == VisionConstants.BL_CAMERA_NAME) {
-                                return FRONT_LEFT_CAMERA_LOCATION;
+                                case BL_CAMERA_NAME:
+                                        return BACK_LEFT_CAMERA_LOCATION;
 
-                        } else if (camera.getName() == VisionConstants.BR_CAMERA_NAME) {
-                                return FRONT_LEFT_CAMERA_LOCATION;
+                                case BR_CAMERA_NAME:
+                                        return BACK_RIGHT_CAMERA_LOCATION;
 
-                        } else {
-                                return null;
+                                default:
+                                        return null;
                         }
                 }
         }
