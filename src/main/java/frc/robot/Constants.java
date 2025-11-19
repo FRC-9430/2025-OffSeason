@@ -89,6 +89,24 @@ public class Constants {
                 public static final Transform3d BACK_RIGHT_CAMERA_LOCATION = new Transform3d(
                                 new Translation3d(-0.284, -0.284, 0.209),
                                 new Rotation3d(0, -Math.toRadians(15), -Math.toRadians(45)));
+
+                public static final Transform3d getTransformOf(PhotonCamera camera) {
+                        if (camera.getName() == VisionConstants.FL_CAMERA_NAME) {
+                                return FRONT_LEFT_CAMERA_LOCATION;
+
+                        } else if (camera.getName() == VisionConstants.FR_CAMERA_NAME) {
+                                return FRONT_LEFT_CAMERA_LOCATION;
+
+                        } else if (camera.getName() == VisionConstants.BL_CAMERA_NAME) {
+                                return FRONT_LEFT_CAMERA_LOCATION;
+
+                        } else if (camera.getName() == VisionConstants.BR_CAMERA_NAME) {
+                                return FRONT_LEFT_CAMERA_LOCATION;
+
+                        } else {
+                                return null;
+                        }
+                }
         }
 
         public static final class AprilTagConstants {
