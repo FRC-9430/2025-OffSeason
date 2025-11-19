@@ -8,7 +8,6 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -72,7 +71,11 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    if (m_cameraPoseEstimation.seesTag()) {
+      m_odometry.resetPose(getCameraEstimatedPose());
+    }
+
+    return getOdometryEstimatedPose();
   }
 
   /**
@@ -231,6 +234,22 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       logCameraDetection(BACK_RIGHT_DETECTION);
     }
 
+    public boolean seesTag() {
+      if (FRONT_LEFT_DETECTION.tagId != -1)
+        return true;
+
+      if (FRONT_RIGHT_DETECTION.tagId != -1)
+        return true;
+
+      if (BACK_LEFT_DETECTION.tagId != -1)
+        return true;
+
+      if (BACK_LEFT_DETECTION.tagId != -1)
+        return true;
+
+      return false;
+    }
+
     // Helper method to get the most recent detection across all cameras.
     private CameraDetection getMostRecentDetection() {
       CameraDetection[] detections = {
@@ -250,7 +269,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       return mostRecent;
     }
 
-    private CameraDetection getDetectionOf(PhotonCamera camera) {
+    public CameraDetection getDetectionOf(PhotonCamera camera) {
       switch (camera.getName()) {
         case VisionConstants.FL_CAMERA_NAME:
           return FRONT_LEFT_DETECTION;
@@ -276,18 +295,19 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       Translation3d tagLocation = AprilTagInfo.getTranslation3d(latestDetection.tagId);
       Rotation3d tagRotation = AprilTagInfo.getRotation3d(latestDetection.tagId);
 
-      double camX = tagLocation.getMeasureX().in(Meter) - latestDetection.xOffsetToTag;
-      double camY = tagLocation.getMeasureY().in(Meter) - latestDetection.yOffsetToTag;
-      double camDeg = tagRotation.getMeasureZ().in(Degree) - latestDetection.tagOrientationErrorDeg;
+      double relativeX = tagLocation.getMeasureX().in(Meter) - latestDetection.xOffsetToTag;
+      double relativeY = tagLocation.getMeasureY().in(Meter) - latestDetection.yOffsetToTag;
+      double reletiveRotationDeg = tagRotation.getMeasureZ().in(Degree) - latestDetection.tagOrientationErrorDeg;
 
-      double robotX = camX - VisionConstants.getTransformOf(latestDetection.camera).getMeasureX().in(Meter);
-      double robotY = camY - VisionConstants.getTransformOf(latestDetection.camera).getMeasureY().in(Meter);
-      double robotThetaDeg = camDeg - VisionConstants.getTransformOf(latestDetection.camera).getRotation().getMeasureZ().in(Degree);
+      double robotX = relativeX - VisionConstants.getTransformOf(latestDetection.camera).getMeasureX().in(Meter);
+      double robotY = relativeY - VisionConstants.getTransformOf(latestDetection.camera).getMeasureY().in(Meter);
+      double robotThetaDeg = reletiveRotationDeg
+          - VisionConstants.getTransformOf(latestDetection.camera).getRotation().getMeasureZ().in(Degree);
 
       Pose2d estimatedPose = new Pose2d(
           new Translation2d(robotX, robotY),
           Rotation2d.fromDegrees(robotThetaDeg));
-      
+
       return estimatedPose;
     }
 
@@ -295,7 +315,9 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
      * Class for handling camera detections.
      */
     private static class CameraDetection {
+      /** ID of detected April Tag, -1 if no tag is seen */
       int tagId;
+      /** Timestamp of detection in seconds */
       double detectionTimestamp;
       double distanceToTag;
       double bearingToTagDeg;
