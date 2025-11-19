@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -95,6 +96,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    m_cameraPoseEstimation.updateDetections();
   }
 
   private class CameraPoseEstimation {
@@ -119,7 +121,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Camera " + cameraName + " yOffsetToTag", detection.yOffsetToTag);
     }
 
-    public void updateDetections(Rotation2d gyroRotation) {
+    public void updateDetections() {
       /*
        * FRONT LEFT CAMERA
        */
@@ -136,7 +138,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       CameraDetection FL_detection = new CameraDetection(
           (FL_bestTarget != null) ? FL_bestTarget.getFiducialId() : -1,
           FL_result.getTimestampSeconds(),
-          gyroRotation,
           FL_translation.getMeasureX().in(Meter),
           FL_rotation.getMeasureZ().in(Degree),
           FL_translation.getMeasureY().in(Meter),
@@ -164,7 +165,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       CameraDetection FR_detection = new CameraDetection(
           (FR_bestTarget != null) ? FR_bestTarget.getFiducialId() : -1,
           FR_result.getTimestampSeconds(),
-          gyroRotation,
           FR_translation.getMeasureX().in(Meter),
           FR_rotation.getMeasureZ().in(Degree),
           FR_translation.getMeasureY().in(Meter),
@@ -192,7 +192,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       CameraDetection BL_detection = new CameraDetection(
           (BL_bestTarget != null) ? BL_bestTarget.getFiducialId() : -1,
           BL_result.getTimestampSeconds(),
-          gyroRotation,
           BL_translation.getMeasureX().in(Meter),
           BL_rotation.getMeasureZ().in(Degree),
           BL_translation.getMeasureY().in(Meter),
@@ -220,7 +219,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       CameraDetection BR_detection = new CameraDetection(
           (BR_bestTarget != null) ? BR_bestTarget.getFiducialId() : -1,
           BR_result.getTimestampSeconds(),
-          gyroRotation,
           BR_translation.getMeasureX().in(Meter),
           BR_rotation.getMeasureZ().in(Degree),
           BR_translation.getMeasureY().in(Meter),
@@ -369,15 +367,19 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     public Pose2d getEstimatedPose() {
 
       CameraDetection latestDetection = getMostRecentDetection();
-      PhotonCamera camera = latestDetection.camera;
 
-      double yOffsetToCamera = latestDetection.yOffsetToTag;
-      double xOffsetToCamera = latestDetection.xOffsetToTag;
+      Translation3d tagLocation = AprilTagInfo.getTranslation3d(latestDetection.tagId);
+      Rotation3d tagRotation = AprilTagInfo.getRotation3d(latestDetection.tagId);
 
-      Translation3d tagTranslation = AprilTagInfo.getTranslation3d(latestDetection.tagId);
+      double robotX = tagLocation.getMeasureX().in(Meter) - latestDetection.xOffsetToTag;
+      double robotY = tagLocation.getMeasureY().in(Meter) - latestDetection.yOffsetToTag;
+      double robotThetaDeg = tagRotation.getMeasureZ().in(Degree) - latestDetection.tagOrientationErrorDeg;
 
-      //TODO implement math after getting tag infomation
-      return new Pose2d();
+      Pose2d estimatedPose = new Pose2d(
+          new Translation2d(robotX, robotY),
+          Rotation2d.fromDegrees(robotThetaDeg));
+      
+      return estimatedPose;
     }
 
     /**
@@ -386,7 +388,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     private static class CameraDetection {
       int tagId;
       double detectionTimestamp;
-      Rotation2d detectionHeading;
       double distanceToTag;
       double bearingToTagDeg;
       double lateralOffsetToTag;
@@ -395,13 +396,12 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       double tagOrientationErrorDeg;
       PhotonCamera camera;
 
-      public CameraDetection(int tagId, double detectionTimestamp, Rotation2d detectionHeading,
+      public CameraDetection(int tagId, double detectionTimestamp,
           double distanceToTag, double bearingToTagDeg, double lateralOffsetToTag,
           double xOffsetToTag, double yOffsetToTag, double tagOrientationErrorDeg,
           PhotonCamera camera) {
         this.tagId = tagId;
         this.detectionTimestamp = detectionTimestamp;
-        this.detectionHeading = detectionHeading;
         this.distanceToTag = distanceToTag;
         this.bearingToTagDeg = bearingToTagDeg;
         this.lateralOffsetToTag = lateralOffsetToTag;
