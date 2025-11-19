@@ -16,4 +16,18 @@ public final class Constants {
         public static final double kShooterPivotMinHeight = .090;
 
     }
+    public static final class TagConstants{
+    //Coral Station (Tag IDs, height, angle)
+        public static final int[] coralStationTagIds = {1, 2, 12, 13};
+        public static final double coralStationTagHeight = 58.50;
+        public static final double coralStationTagAngle = 0;
+    // Barge (Tag IDs, height, angle)
+        public static final int [] bargeTagIds = {14, 4, 15, 5};
+        public static final double bargeTagHeight = 73.54;
+        public static final double bargeTagAngle = 30;
+    // Reef (IDs, height, angle)
+        public static final int [] reefTagIds = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21 ,22};
+        public static final double reefTagHeight = 12.13;
+        public static final double reefTagAngle = 0;
+    }
 }
