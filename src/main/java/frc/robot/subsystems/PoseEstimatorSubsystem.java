@@ -277,7 +277,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       Rotation3d tagRotation = AprilTagInfo.getRotation3d(latestDetection.tagId);
 
       double camX = tagLocation.getMeasureX().in(Meter) - latestDetection.xOffsetToTag;
-      double camY tagLocation.getMeasureY().in(Meter) - latestDetection.yOffsetToTag;
+      double camY = tagLocation.getMeasureY().in(Meter) - latestDetection.yOffsetToTag;
       double camDeg = tagRotation.getMeasureZ().in(Degree) - latestDetection.tagOrientationErrorDeg;
 
       double robotX = camX - VisionConstants.getTransformOf(latestDetection.camera).getMeasureX().in(Meter);
