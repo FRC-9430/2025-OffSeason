@@ -19,13 +19,16 @@ public class Constants {
         public class DriveConstants {
 
                 public static final int kFrontLeftDriveMotorCanID = 11;
-                public static final int kFrontLeftTurningMotorCanID = 10;
+                public static final int kFrontLeftTurningMotorCanID = 12;
+                
                 public static final int kFrontRightDriveMotorCanID = 13;
-                public static final int kFrontRightTurningMotorCanID = 12;
+                public static final int kFrontRightTurningMotorCanID = 14;
+                
                 public static final int kBackLeftDriveMotorCanID = 15;
-                public static final int kBackLeftTurningMotorCanID = 14;
+                public static final int kBackLeftTurningMotorCanID = 16;
+                
                 public static final int kBackRightDriveMotorCanID = 17;
-                public static final int kBackRightTurningMotorCanID = 16;
+                public static final int kBackRightTurningMotorCanID = 18;
 
                 public static final int pigeon2CanID = 1;
 
@@ -277,7 +280,7 @@ public class Constants {
                                 turningConfig.closedLoop
                                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                                                 // These are example gains you may need to them for your own robot!
-                                                .pid(1, 0, 0)
+                                                .pid(0.04, 0, 0)
                                                 .outputRange(-1, 1)
                                                 // Enable PID wrap around for the turning motor. This will allow the PID
                                                 // controller to go through 0 to get to the setpoint i.e. going from 350
@@ -287,6 +290,9 @@ public class Constants {
                                                 // longer route.
                                                 .positionWrappingEnabled(true)
                                                 .positionWrappingInputRange(0, turningFactor);
+                                
+                                
+                                
                         }
                 };
 
