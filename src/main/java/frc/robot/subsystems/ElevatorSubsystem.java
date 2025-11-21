@@ -54,6 +54,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    elevatorController.calculate(elevatorEncoder.getPosition(), 0.5);
     // This method will be called once per scheduler run
   }
 }

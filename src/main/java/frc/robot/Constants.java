@@ -20,10 +20,10 @@ public final class Constants {
 
     }
     public static final class PIDConstants{
-        public static final double kShooterkp = 0.1; //TO DO: set shooter PID values
+        public static final double kShooterkp = 0.1; //TODO: set shooter PID values
         public static final double kShooterki = 0;
         public static final double kShooterkd = 0;
-        public static final double kElevatorkp = 0.1; //TO DO: set elevator PID values
+        public static final double kElevatorkp = 0.1; //TODO: set elevator PID values
         public static final double kElevatorki = 0;
         public static final double kElevatorkd = 0;
         public static final double kTransitSetpoint = .255;
