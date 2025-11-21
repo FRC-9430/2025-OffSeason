@@ -29,23 +29,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorEncoder = ElevatorMotor.getAbsoluteEncoder();
   }
 
-  public void runIntake(double speed) {
+  public void moveElevator(double speed) {
     ElevatorMotor.set(speed);
-  }
-
-  public void stopIntake() {
-    ElevatorMotor.stopMotor();
-  }
-
-  // need elevator min and max to be defined in constants
-  public void setShooterSpeed(double speed) {
-    if (elevatorEncoder.getPosition() > MotorConstants.kElevatorMinHeight   
-        && elevatorEncoder.getPosition() < MotorConstants.kElevatorMaxHeight ) {
-          ElevatorMotor.set(speed);
-    }else{
-      stopElevator();
-    }
-    // Elevator.stopMotor();
   }
 
   public void stopElevator() {

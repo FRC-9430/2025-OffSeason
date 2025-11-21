@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
@@ -14,7 +16,7 @@ import frc.robot.Constants.MotorConstants;
 import frc.robot.Constants.PIDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  //PID controller
+  // PID controller
   private PIDController pidController;
 
   // Declare motors for shooter
@@ -22,13 +24,16 @@ public class ShooterSubsystem extends SubsystemBase {
   private SparkMax shooterMotor;
   private AbsoluteEncoder shooterEncoder;
 
+  private boolean doAutonomousMovement = false;
+  private double setPoint = 0.0;
+
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
     intakeMotor = new SparkMax(MotorConstants.IntakeMotorCanID, SparkMax.MotorType.kBrushless);
     shooterMotor = new SparkMax(MotorConstants.ShooterMotorCanID, SparkMax.MotorType.kBrushless);
     shooterEncoder = shooterMotor.getAbsoluteEncoder();
     pidController = new PIDController(PIDConstants.kShooterkp, PIDConstants.kShooterki, PIDConstants.kShooterkd);
-    //setShooterPosition(PIDConstants.kTransitSetpoint);
+    // setShooterPosition(PIDConstants.kTransitSetpoint);
   }
 
   public void runIntake(double speed) {
@@ -40,17 +45,17 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
-    //if (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight 
-       // && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight ) {
-          shooterMotor.set(speed);
-    
-        //}else{
-      //stopShooter();
-   // }
+    // if (shooterEncoder.getPosition() > MotorConstants.kShooterPivotMinHeight
+    // && shooterEncoder.getPosition() < MotorConstants.kShooterPivotMaxHeight ) {
+    shooterMotor.set(speed);
+
+    // }else{
+    // stopShooter();
+    // }
     // shooterMotor.stopMotor();
   }
 
-  public void setShooterPosition(double position){
+  public void setShooterPosition(double position) {
     pidController.reset();
     pidController.setSetpoint(position);
   }
@@ -59,11 +64,30 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor.stopMotor();
   }
 
+  public void toggleAutonomousMovement() {
+    if (doAutonomousMovement == false) {
+      doAutonomousMovement = true;
+    } else if (doAutonomousMovement == true) {
+      doAutonomousMovement = false;
+    }
+  }
+
+  public void increaseSetPoint() {
+    setPoint = setPoint + 1;
+
+  }
+  public void decreaseSetPoint() {
+    setPoint = setPoint - 1;
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    pidController.setSetpoint(PIDConstants.kTransitSetpoint);
-    setShooterSpeed(-pidController.calculate(shooterEncoder.getPosition()));
+
+    if (doAutonomousMovement == true) {
+      pidController.setSetpoint(setPoint);
+      setShooterSpeed(-pidController.calculate(shooterEncoder.getPosition()));
+    }
+
   }
 }
