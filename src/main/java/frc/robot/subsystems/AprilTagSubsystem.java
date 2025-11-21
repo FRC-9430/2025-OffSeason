@@ -31,6 +31,9 @@ public class AprilTagSubsystem{
         System.out.println();
     }
 
+    public void printTargetInformation() {
+        if 
 
 
+    }
 }
