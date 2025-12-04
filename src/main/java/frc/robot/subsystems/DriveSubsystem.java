@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
@@ -54,14 +55,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry = new SwerveDriveOdometry(
         Constants.DriveConstants.kDriveKinematics,
-        new Rotation2d(),
-        new SwerveModulePosition[] {
-            new SwerveModulePosition(),
-            new SwerveModulePosition(),
-            new SwerveModulePosition(),
-            new SwerveModulePosition()
-        });
+        m_gyro.getRotation2d(),
+        getSwervePositions());
 
+    // TODO: Determine code as config vs hardware config design strategy
     zeroHeading(); // Reset the gyro so we start facing 'forward' as zero degrees.
     RobotConfig config = null;
 
@@ -92,7 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-          return false;
+          var alliance = DriverStation.getAlliance();
+          return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
         },
         this // Reference to this subsystem to set requirements
     );
@@ -127,12 +125,12 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
   }
-  
+
     @Override
     public void periodic() {
       m_odometry.update(m_gyro.getRotation2d(), getSwervePositions());
     }
-  
+
   /**
    * Get the swerve modules' current positions (how far each wheel has rolled).
    */
@@ -181,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
     double xSpeedDelivered = xSpeed * DriveConstants.kMaxSpeedMetersPerSecond;
     double ySpeedDelivered = ySpeed * DriveConstants.kMaxSpeedMetersPerSecond;
     double rotDelivered = rot * DriveConstants.kMaxAngularSpeed;
-    // TODO: FIX TO USE TO ROBOT RELATIVE SPEEDS
+
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
@@ -189,10 +187,8 @@ public class DriveSubsystem extends SubsystemBase {
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+    setModuleStates(swerveModuleStates);
   }
 
   /** Zeroes the heading of the robot. */

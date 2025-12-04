@@ -93,19 +93,23 @@ public class SwerveModule {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        // Apply chassis angular offset to the desired state.
-        SwerveModuleState correctedDesiredState = new SwerveModuleState();
-        correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-        correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
 
         // Optimize the reference state to avoid spinning further than 90 degrees.
-        correctedDesiredState.optimize(new Rotation2d(m_turningEncoder.getPosition()));
+
+        // The optimize method returns a new state with the optimized angle and
+        // potentially reversed velocity.
+        SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, desiredState.angle);
+
+        // The optimized state is chassis-relative. We need to convert the angle
+        // to the motor's frame of reference for the PID controller.
+        double motorSetpointRadians = optimizedState.angle.getRadians() + m_chassisAngularOffset;
 
         // Command driving and turning SPARKS towards their respective setpoints.
-        m_drivingClosedLoopController.setReference(correctedDesiredState.speedMetersPerSecond, ControlType.kVelocity);
-        m_turningClosedLoopController.setReference(correctedDesiredState.angle.getRadians(), ControlType.kPosition);
+        m_drivingClosedLoopController.setReference(optimizedState.speedMetersPerSecond, ControlType.kVelocity);
+        m_turningClosedLoopController.setReference(motorSetpointRadians, ControlType.kPosition);
 
-        m_desiredState = correctedDesiredState;
+        m_desiredState = desiredState;
+
     }
 
     /** Zeroes all the SwerveModule encoders. */
