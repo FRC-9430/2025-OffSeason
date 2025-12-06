@@ -43,12 +43,6 @@ public class SwerveModule {
         driveMotor = new SparkFlex(drivingCANId, MotorType.kBrushless);
         turningMotor = new SparkFlex(turningCANId, MotorType.kBrushless);
 
-        m_drivingEncoder = driveMotor.getEncoder();
-        m_turningEncoder = turningMotor.getAbsoluteEncoder();
-
-        m_drivingClosedLoopController = driveMotor.getClosedLoopController();
-        m_turningClosedLoopController = turningMotor.getClosedLoopController();
-
         // Apply the respective configurations to the SPARKS. Reset parameters before
         // applying the configuration to bring the SPARK to a known good state. Persist
         // the settings to the SPARK to avoid losing them on a power cycle.
