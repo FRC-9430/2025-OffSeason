@@ -9,6 +9,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -18,11 +19,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.Meter;
+
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AprilTagConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.utils.AprilTagInfo;
 
 /**
  * Pose estimation subsyestem designed to overwrite the default swerve odometry
@@ -58,7 +62,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
   /**
    * Update the odometry with the latest swerve module positions.
-   * 
+   *
    * @param swervePositions
    */
   public void update(Rotation2d rotation, SwerveModulePosition[] swervePositions) {
@@ -72,7 +76,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
    */
   public Pose2d getPose() {
     if (m_cameraPoseEstimation.seesTag()) {
-      m_odometry.resetPose(getCameraEstimatedPose());
+      m_odometry.resetPose(getCameraEstimatedPose().toPose2d());
     }
 
     return getOdometryEstimatedPose();
@@ -80,7 +84,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
   /**
    * Returns the odometry estimated pose of the robot.
-   * 
+   *
    * @return
    */
   private Pose2d getOdometryEstimatedPose() {
@@ -89,10 +93,10 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
   /**
    * Returns the camera estimated pose of the robot.
-   * 
+   *
    * @return
    */
-  private Pose2d getCameraEstimatedPose() {
+  private Pose3d getCameraEstimatedPose() {
     return m_cameraPoseEstimation.getEstimatedPose();
   }
 
@@ -288,27 +292,12 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       }
     }
 
-    public Pose2d getEstimatedPose() {
-
-      CameraDetection latestDetection = getMostRecentDetection();
-
-      Translation3d tagLocation = AprilTagInfo.getTranslation3d(latestDetection.tagId);
-      Rotation3d tagRotation = AprilTagInfo.getRotation3d(latestDetection.tagId);
-
-      double relativeX = tagLocation.getMeasureX().in(Meter) - latestDetection.xOffsetToTag;
-      double relativeY = tagLocation.getMeasureY().in(Meter) - latestDetection.yOffsetToTag;
-      double reletiveRotationDeg = tagRotation.getMeasureZ().in(Degree) - latestDetection.tagOrientationErrorDeg;
-
-      double robotX = relativeX - VisionConstants.getTransformOf(latestDetection.camera).getMeasureX().in(Meter);
-      double robotY = relativeY - VisionConstants.getTransformOf(latestDetection.camera).getMeasureY().in(Meter);
-      double robotThetaDeg = reletiveRotationDeg
-          - VisionConstants.getTransformOf(latestDetection.camera).getRotation().getMeasureZ().in(Degree);
-
-      Pose2d estimatedPose = new Pose2d(
-          new Translation2d(robotX, robotY),
-          Rotation2d.fromDegrees(robotThetaDeg));
-
-      return estimatedPose;
+    public Pose3d getEstimatedPose() {
+        CameraDetection latestDetection = getMostRecentDetection();
+        // Get the pose of latest detected tag from the field layout.
+        Optional<Pose3d> latestDetectedTagOptional = AprilTagConstants.kFieldLayout.getTagPose(latestDetection.tagId);
+        Pose3d tagPose = latestDetectedTagOptional.get();
+        return tagPose;
     }
 
     /**
