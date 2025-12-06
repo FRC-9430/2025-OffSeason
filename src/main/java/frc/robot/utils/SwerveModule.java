@@ -57,6 +57,12 @@ public class SwerveModule {
         turningMotor.configure(Configs.X2TSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
 
+        m_drivingEncoder = driveMotor.getEncoder();
+        m_turningEncoder = turningMotor.getAbsoluteEncoder();
+
+        m_drivingClosedLoopController = driveMotor.getClosedLoopController();
+        m_turningClosedLoopController = turningMotor.getClosedLoopController();
+
         m_chassisAngularOffset = chassisAngularOffset;
         m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
         m_drivingEncoder.setPosition(0);
