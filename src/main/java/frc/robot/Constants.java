@@ -4,8 +4,7 @@ import org.photonvision.PhotonCamera;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
+import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -52,8 +51,8 @@ public class Constants {
 
                 // Angular offsets of the modules relative to the chassis in radians
                 public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
-                public static final double kFrontRightChassisAngularOffset = 0;
-                public static final double kBackLeftChassisAngularOffset = Math.PI;
+                public static final double kFrontRightChassisAngularOffset = Math.PI;
+                public static final double kBackLeftChassisAngularOffset = 0;
                 public static final double kBackRightChassisAngularOffset = Math.PI / 2;
         }
 
@@ -244,8 +243,8 @@ public class Constants {
         public static final class Configs {
 
                 public static final class X2TSwerveModule {
-                        public static final SparkMaxConfig drivingConfig = new SparkMaxConfig();
-                        public static final SparkMaxConfig turningConfig = new SparkMaxConfig();
+                        public static final SparkFlexConfig drivingConfig = new SparkFlexConfig();
+                        public static final SparkFlexConfig turningConfig = new SparkFlexConfig();
 
                         static {
                                 // Use module constants to calculate conversion factors and feed forward gain.
@@ -280,7 +279,7 @@ public class Constants {
                                 turningConfig.closedLoop
                                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                                                 // These are example gains you may need to them for your own robot!
-                                                .pid(0.04, 0, 0)
+                                                .pid(0.1, 0, 0)
                                                 .outputRange(-1, 1)
                                                 // Enable PID wrap around for the turning motor. This will allow the PID
                                                 // controller to go through 0 to get to the setpoint i.e. going from 350
@@ -289,9 +288,12 @@ public class Constants {
                                                 // is a
                                                 // longer route.
                                                 .positionWrappingEnabled(true)
-                                                .positionWrappingInputRange(0, turningFactor);
-                                
-                                
+                                                .positionWrappingInputRange(0, turningFactor)
+
+                                                .maxMotion
+                                                        .allowedClosedLoopError(1)
+                                                        .maxVelocity(1)
+                                                        .maxAcceleration(0.5);
                                 
                         }
                 };
@@ -300,12 +302,12 @@ public class Constants {
                         // The MAXSwerve module can be configured with one of three pinion gears: 12T,
                         // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
                         // more teeth will result in a robot that drives faster).
-                        public static final int kDrivingMotorPinionTeeth = 14;
+                        public static final int kDrivingMotorPinionTeeth = 12;
 
                         // Calculations required for driving motor conversion factors and feed forward
-                        public static final double kDrivingMotorFreeSpeedRps = 5676 / 60;
-                        public static final double kWheelDiameterMeters = 0.0729;
+                        public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
                         public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+                        public static final double kDrivingMotorFreeSpeedRps = Units.feetToMeters(18.5) / kWheelCircumferenceMeters;
                         // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
                         // teeth on the bevel pinion
                         // TODO bbontrager89 20241107.1742: Need to update values for
