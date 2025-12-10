@@ -8,6 +8,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.Meter;
 
+import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -110,8 +112,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
     private CameraDetection FRONT_LEFT_DETECTION;
     private CameraDetection FRONT_RIGHT_DETECTION;
-    private CameraDetection BACK_LEFT_DETECTION;
-    private CameraDetection BACK_RIGHT_DETECTION;
 
     public static void logCameraDetection(CameraDetection detection) {
       String cameraName = detection.camera.getName();
@@ -133,109 +133,76 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
        * FRONT LEFT CAMERA
        */
 
-      PhotonPipelineResult FL_result = VisionConstants.FRONT_LEFT_CAMERA.getLatestResult();
-      PhotonTrackedTarget FL_bestTarget = FL_result.getBestTarget();
-      Transform3d FL_cameraToTarget = (FL_bestTarget != null) ? FL_bestTarget.getBestCameraToTarget()
-          : new Transform3d();
-      Transform3d FL_robotToTarget = VisionConstants.FRONT_LEFT_CAMERA_LOCATION.plus(FL_cameraToTarget);
-      Translation3d FL_translation = FL_robotToTarget.getTranslation();
-      Rotation3d FL_rotation = FL_robotToTarget.getRotation();
+      List<PhotonPipelineResult> FL_unreadResults = VisionConstants.FRONT_LEFT_CAMERA.getAllUnreadResults();
 
-      // Create and store detection info for this camera.
-      CameraDetection FL_detection = new CameraDetection(
-          (FL_bestTarget != null) ? FL_bestTarget.getFiducialId() : -1,
-          FL_result.getTimestampSeconds(),
-          FL_translation.getMeasureX().in(Meter),
-          FL_rotation.getMeasureZ().in(Degree),
-          FL_translation.getMeasureY().in(Meter),
-          FL_cameraToTarget.getTranslation().getX(),
-          FL_cameraToTarget.getTranslation().getY(),
-          FL_rotation.getMeasureZ().in(Degree),
-          VisionConstants.FRONT_LEFT_CAMERA);
+      if (FL_unreadResults.size() > 0) {
 
-      FRONT_LEFT_DETECTION = FL_detection;
-      logCameraDetection(FRONT_LEFT_DETECTION);
+        PhotonPipelineResult FL_result = FL_unreadResults.size() > 0 ? FL_unreadResults.get(FL_unreadResults.size() - 1)
+            : null;
+        PhotonTrackedTarget FL_bestTarget = FL_result.getBestTarget();
+
+        if (FL_bestTarget.getFiducialId() != -1) {
+
+          Transform3d FL_cameraToTarget = FL_bestTarget.getBestCameraToTarget();
+          Transform3d FL_robotToTarget = VisionConstants.FRONT_LEFT_CAMERA_LOCATION.plus(FL_cameraToTarget);
+          Translation3d FL_translation = FL_robotToTarget.getTranslation();
+          Rotation3d FL_rotation = FL_robotToTarget.getRotation();
+
+          // Create and store detection info for this camera.
+          CameraDetection FL_detection = new CameraDetection(
+              FL_bestTarget.getFiducialId(),
+              FL_result.getTimestampSeconds(),
+              FL_translation.getMeasureX().in(Meter),
+              FL_rotation.getMeasureZ().in(Degree),
+              FL_translation.getMeasureY().in(Meter),
+              FL_cameraToTarget.getTranslation().getX(),
+              FL_cameraToTarget.getTranslation().getY(),
+              FL_rotation.getMeasureZ().in(Degree),
+              VisionConstants.FRONT_LEFT_CAMERA);
+
+          FRONT_LEFT_DETECTION = FL_detection;
+          logCameraDetection(FRONT_LEFT_DETECTION);
+        }
+
+      }
 
       /*
        * FRONT RIGHT CAMERA
        */
 
-      PhotonPipelineResult FR_result = VisionConstants.FRONT_RIGHT_CAMERA.getLatestResult();
-      PhotonTrackedTarget FR_bestTarget = FR_result.getBestTarget();
-      Transform3d FR_cameraToTarget = (FR_bestTarget != null) ? FR_bestTarget.getBestCameraToTarget()
-          : new Transform3d();
-      Transform3d FR_robotToTarget = VisionConstants.FRONT_RIGHT_CAMERA_LOCATION.plus(FR_cameraToTarget);
-      Translation3d FR_translation = FR_robotToTarget.getTranslation();
-      Rotation3d FR_rotation = FR_robotToTarget.getRotation();
+      List<PhotonPipelineResult> FR_unreadResults = VisionConstants.FRONT_RIGHT_CAMERA.getAllUnreadResults();
 
-      // Create and store detection info for this camera.
-      CameraDetection FR_detection = new CameraDetection(
-          (FR_bestTarget != null) ? FR_bestTarget.getFiducialId() : -1,
-          FR_result.getTimestampSeconds(),
-          FR_translation.getMeasureX().in(Meter),
-          FR_rotation.getMeasureZ().in(Degree),
-          FR_translation.getMeasureY().in(Meter),
-          FR_cameraToTarget.getTranslation().getX(),
-          FR_cameraToTarget.getTranslation().getY(),
-          FR_rotation.getMeasureZ().in(Degree),
-          VisionConstants.FRONT_RIGHT_CAMERA);
+      if (FL_unreadResults.size() > 0) {
 
-      FRONT_RIGHT_DETECTION = FR_detection;
-      logCameraDetection(FRONT_RIGHT_DETECTION);
+        PhotonPipelineResult FR_result = FR_unreadResults.size() > 0 ? FL_unreadResults.get(FR_unreadResults.size() - 1)
+            : null;
+        PhotonTrackedTarget FR_bestTarget = FR_result.getBestTarget();
 
-      /*
-       * BACK LEFT CAMERA
-       */
+        if (FR_bestTarget.getFiducialId() != -1) {
 
-      PhotonPipelineResult BL_result = VisionConstants.BACK_LEFT_CAMERA.getLatestResult();
-      PhotonTrackedTarget BL_bestTarget = BL_result.getBestTarget();
-      Transform3d BL_cameraToTarget = (BL_bestTarget != null) ? BL_bestTarget.getBestCameraToTarget()
-          : new Transform3d();
-      Transform3d BL_robotToTarget = VisionConstants.BACK_LEFT_CAMERA_LOCATION.plus(BL_cameraToTarget);
-      Translation3d BL_translation = BL_robotToTarget.getTranslation();
-      Rotation3d BL_rotation = BL_robotToTarget.getRotation();
+          Transform3d FR_cameraToTarget = FR_bestTarget.getBestCameraToTarget();
+          Transform3d FR_robotToTarget = VisionConstants.FRONT_RIGHT_CAMERA_LOCATION.plus(FR_cameraToTarget);
+          Translation3d FR_translation = FR_robotToTarget.getTranslation();
+          Rotation3d FR_rotation = FR_robotToTarget.getRotation();
 
-      // Create and store detection info for this camera.
-      CameraDetection BL_detection = new CameraDetection(
-          (BL_bestTarget != null) ? BL_bestTarget.getFiducialId() : -1,
-          BL_result.getTimestampSeconds(),
-          BL_translation.getMeasureX().in(Meter),
-          BL_rotation.getMeasureZ().in(Degree),
-          BL_translation.getMeasureY().in(Meter),
-          BL_cameraToTarget.getTranslation().getX(),
-          BL_cameraToTarget.getTranslation().getY(),
-          BL_rotation.getMeasureZ().in(Degree),
-          VisionConstants.BACK_LEFT_CAMERA);
+          // Create and store detection info for this camera.
+          CameraDetection FR_detection = new CameraDetection(
+              FR_bestTarget.getFiducialId(),
+              FR_result.getTimestampSeconds(),
+              FR_translation.getMeasureX().in(Meter),
+              FR_rotation.getMeasureZ().in(Degree),
+              FR_translation.getMeasureY().in(Meter),
+              FR_cameraToTarget.getTranslation().getX(),
+              FR_cameraToTarget.getTranslation().getY(),
+              FR_rotation.getMeasureZ().in(Degree),
+              VisionConstants.FRONT_LEFT_CAMERA);
 
-      BACK_LEFT_DETECTION = BL_detection;
-      logCameraDetection(BACK_LEFT_DETECTION);
+          FRONT_RIGHT_DETECTION = FR_detection;
+          logCameraDetection(FRONT_RIGHT_DETECTION);
+        }
 
-      /*
-       * BACK RIGHT CAMERA
-       */
+      }
 
-      PhotonPipelineResult BR_result = VisionConstants.BACK_RIGHT_CAMERA.getLatestResult();
-      PhotonTrackedTarget BR_bestTarget = BR_result.getBestTarget();
-      Transform3d BR_cameraToTarget = (BR_bestTarget != null) ? BR_bestTarget.getBestCameraToTarget()
-          : new Transform3d();
-      Transform3d BR_robotToTarget = VisionConstants.BACK_RIGHT_CAMERA_LOCATION.plus(BR_cameraToTarget);
-      Translation3d BR_translation = BR_robotToTarget.getTranslation();
-      Rotation3d BR_rotation = BR_robotToTarget.getRotation();
-
-      // Create and store detection info for this camera.
-      CameraDetection BR_detection = new CameraDetection(
-          (BR_bestTarget != null) ? BR_bestTarget.getFiducialId() : -1,
-          BR_result.getTimestampSeconds(),
-          BR_translation.getMeasureX().in(Meter),
-          BR_rotation.getMeasureZ().in(Degree),
-          BR_translation.getMeasureY().in(Meter),
-          BR_cameraToTarget.getTranslation().getX(),
-          BR_cameraToTarget.getTranslation().getY(),
-          BR_rotation.getMeasureZ().in(Degree),
-          VisionConstants.BACK_RIGHT_CAMERA);
-
-      BACK_RIGHT_DETECTION = BR_detection;
-      logCameraDetection(BACK_RIGHT_DETECTION);
     }
 
     public boolean seesTag() {
@@ -245,12 +212,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       if (FRONT_RIGHT_DETECTION.tagId != -1)
         return true;
 
-      if (BACK_LEFT_DETECTION.tagId != -1)
-        return true;
-
-      if (BACK_LEFT_DETECTION.tagId != -1)
-        return true;
-
       return false;
     }
 
@@ -258,9 +219,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     private CameraDetection getMostRecentDetection() {
       CameraDetection[] detections = {
           FRONT_LEFT_DETECTION,
-          FRONT_RIGHT_DETECTION,
-          BACK_LEFT_DETECTION,
-          BACK_RIGHT_DETECTION
+          FRONT_RIGHT_DETECTION
       };
       CameraDetection mostRecent = FRONT_LEFT_DETECTION;
       for (CameraDetection detection : detections) {
@@ -281,23 +240,27 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         case VisionConstants.FR_CAMERA_NAME:
           return FRONT_RIGHT_DETECTION;
 
-        case VisionConstants.BL_CAMERA_NAME:
-          return BACK_LEFT_DETECTION;
-
-        case VisionConstants.BR_CAMERA_NAME:
-          return BACK_RIGHT_DETECTION;
-
         default:
           return null;
       }
     }
 
     public Pose3d getEstimatedPose() {
-        CameraDetection latestDetection = getMostRecentDetection();
-        // Get the pose of latest detected tag from the field layout.
-        Optional<Pose3d> latestDetectedTagOptional = AprilTagConstants.kFieldLayout.getTagPose(latestDetection.tagId);
-        Pose3d tagPose = latestDetectedTagOptional.get();
-        return tagPose;
+      CameraDetection latestDetection = getMostRecentDetection();
+      // Get the pose of latest detected tag from the field layout.
+      Optional<Pose3d> latestDetectedTagOptional = AprilTagConstants.kFieldLayout.getTagPose(latestDetection.tagId);
+      Pose3d tagPose = latestDetectedTagOptional.get();
+
+      // Calculate robot pose based on the tag pose and the detection offsets.
+      double robotX = tagPose.getX() - latestDetection.xOffsetToTag;
+      double robotY = tagPose.getY() - latestDetection.yOffsetToTag;
+      double robotRotationDeg = Math.toDegrees(tagPose.getRotation().getAngle())
+          - latestDetection.tagOrientationErrorDeg;
+      Pose3d robotPose = new Pose3d(
+          new Translation3d(robotX, robotY, 0.0),
+          new Rotation3d(0.0, 0.0, Math.toRadians(robotRotationDeg)));
+
+      return robotPose;
     }
 
     /**
@@ -308,12 +271,19 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       int tagId;
       /** Timestamp of detection in seconds */
       double detectionTimestamp;
+      /** Camera's distance to tag */
       double distanceToTag;
+      /** Camera's bearing to tag in degrees */
       double bearingToTagDeg;
+      /** Camera's lateral offset to tag */
       double lateralOffsetToTag;
+      /** Robot horizontal offset */
       double xOffsetToTag;
+      /** Robot vertical offset */
       double yOffsetToTag;
+      /** Robot rotational error */
       double tagOrientationErrorDeg;
+      /** Camera that detected */
       PhotonCamera camera;
 
       public CameraDetection(int tagId, double detectionTimestamp,
