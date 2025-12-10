@@ -36,6 +36,18 @@ public class AprilTagSubsystem{
         System.out.println();
     }
 
+    public void printTargetInformation() {
+        //getting pipeline result, checking for targets
+        PhotonPipelineResult targets = camera.getLatestResult();
+        boolean presence = targets.hasTargets();
+
+        //verifying and executing printing function
+          if (presence == true){
+            printLatestResult();
+          }
+        
+         
 
 
+    }
 }
