@@ -260,6 +260,9 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
           new Translation3d(robotX, robotY, 0.0),
           new Rotation3d(0.0, 0.0, Math.toRadians(robotRotationDeg)));
 
+      SmartDashboard.putNumber("Camera Estimeted Pose X", robotX);
+      SmartDashboard.putNumber("Camera Estimeted Pose Y", robotY);
+
       return robotPose;
     }
 
