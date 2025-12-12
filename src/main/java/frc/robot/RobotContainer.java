@@ -29,14 +29,14 @@ public class RobotContainer {
         public static CommandXboxController c_operatorController = new CommandXboxController(
                         OIConstants.kOperatorControllerPort);
 
-        private final SendableChooser<Command> autoChooser;
+        //private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
                 configureBindings();
 
-                autoChooser = AutoBuilder.buildAutoChooser();
+                //autoChooser = AutoBuilder.buildAutoChooser();
 
-                SmartDashboard.putData("Auto Chooser", autoChooser);
+                //SmartDashboard.putData("Auto Chooser", autoChooser);
                 /*
                 // Configure default commands
                 m_robotDrive.setDefaultCommand(
@@ -61,6 +61,7 @@ public class RobotContainer {
         }
 
         public Command getAutonomousCommand() {
-                return autoChooser.getSelected();
+                //return autoChooser.getSelected();
+                return Commands.none();
         }
 }
