@@ -38,6 +38,11 @@ public class Constants {
                 public static final int kBackRightDriveMotorCanID = 17;
                 public static final int kBackRightTurningMotorCanID = 18;
 
+                public static final int kBackLeftEncoderID = 21;
+                public static final int kFrontLeftEncoderID = 22;
+                public static final int kFrontRightEncoderID = 23;
+                public static final int kBackRightEncoderID = 24;
+
                 public static final int pigeon2CanID = 1;
 
                 public static final Translation3d pigeon_translation = new Translation3d(-0.2032, 0.1016, 0.0);
