@@ -26,22 +26,22 @@ public class Constants {
 
         public class DriveConstants {
 
-                public static final int kFrontLeftDriveMotorCanID = 11;
-                public static final int kFrontLeftTurningMotorCanID = 12;
+                public static final int kBRDriveMotorCanID = 11;
+                public static final int kBRTurningMotorCanID = 12;
 
-                public static final int kFrontRightDriveMotorCanID = 13;
-                public static final int kFrontRightTurningMotorCanID = 14;
+                public static final int kBLDriveMotorCanID = 13;
+                public static final int kBLTurningMotorCanID = 14;
 
-                public static final int kBackLeftDriveMotorCanID = 15;
-                public static final int kBackLeftTurningMotorCanID = 16;
+                public static final int kFRDriveMotorCanID = 15;
+                public static final int kFRTurningMotorCanID = 16;
 
-                public static final int kBackRightDriveMotorCanID = 17;
-                public static final int kBackRightTurningMotorCanID = 18;
+                public static final int kFLDriveMotorCanID = 17;
+                public static final int kFLTurningMotorCanID = 18;
 
-                public static final int kBackLeftEncoderID = 21;
-                public static final int kFrontLeftEncoderID = 22;
-                public static final int kFrontRightEncoderID = 23;
-                public static final int kBackRightEncoderID = 24;
+                public static final int kFREncoderID = 21;
+                public static final int kBREncoderID = 22;
+                public static final int kBLEncoderID = 23;
+                public static final int kFLEncoderID = 24;
 
                 public static final int pigeon2CanID = 1;
 

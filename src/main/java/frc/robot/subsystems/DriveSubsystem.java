@@ -25,23 +25,23 @@ public class DriveSubsystem extends SubsystemBase {
   // and turn).
   // We have four modules: front-left, front-right, back-left, and back-right.
   public final SwerveModule m_frontLeft = new SwerveModule(
-      DriveConstants.kFrontLeftDriveMotorCanID,
-      DriveConstants.kFrontLeftTurningMotorCanID,
+      DriveConstants.kBRDriveMotorCanID,
+      DriveConstants.kBRTurningMotorCanID,
       DriveConstants.kFrontLeftChassisAngularOffset);
 
   public final SwerveModule m_frontRight = new SwerveModule(
-      DriveConstants.kFrontRightDriveMotorCanID,
-      DriveConstants.kFrontRightTurningMotorCanID,
+      DriveConstants.kBLDriveMotorCanID,
+      DriveConstants.kBLTurningMotorCanID,
       DriveConstants.kFrontRightChassisAngularOffset);
 
   public final SwerveModule m_rearLeft = new SwerveModule(
-      DriveConstants.kBackLeftDriveMotorCanID,
-      DriveConstants.kBackLeftTurningMotorCanID,
+      DriveConstants.kFRDriveMotorCanID,
+      DriveConstants.kFRTurningMotorCanID,
       DriveConstants.kBackLeftChassisAngularOffset);
 
   public final SwerveModule m_rearRight = new SwerveModule(
-      DriveConstants.kBackRightDriveMotorCanID,
-      DriveConstants.kBackRightTurningMotorCanID,
+      DriveConstants.kFLDriveMotorCanID,
+      DriveConstants.kFLTurningMotorCanID,
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
@@ -68,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
       // Handle exception as needed
       e.printStackTrace();
     }
-
+/*
     AutoBuilder.configure(
         this::getPose, // Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -94,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
         },
         this // Reference to this subsystem to set requirements
     );
-
+*/
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
