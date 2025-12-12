@@ -4,22 +4,26 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.config.TunerConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
         // The robot's subsystems
-        // private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+        private CommandSwerveDrivetrain driveTrain = TunerConstants.createDrivetrain();
+        private SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+                        .withDeadband(OIConstants.kDriveDeadband)
+                        .withRotationalDeadband(OIConstants.kDriveDeadband)
+                        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
         // The driver's controller
         public static CommandXboxController c_driverController = new CommandXboxController(
@@ -29,39 +33,38 @@ public class RobotContainer {
         public static CommandXboxController c_operatorController = new CommandXboxController(
                         OIConstants.kOperatorControllerPort);
 
-        //private final SendableChooser<Command> autoChooser;
+        // private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
                 configureBindings();
 
-                //autoChooser = AutoBuilder.buildAutoChooser();
+                // autoChooser = AutoBuilder.buildAutoChooser();
 
-                //SmartDashboard.putData("Auto Chooser", autoChooser);
-                /*
+                // SmartDashboard.putData("Auto Chooser", autoChooser);
+
                 // Configure default commands
-                m_robotDrive.setDefaultCommand(
-                                // The left stick controls translation of the robot.
-                                // Turning is controlled by the X axis of the right stick.
-                                new RunCommand(
-                                                () -> m_robotDrive.drive(
-                                                                -MathUtil.applyDeadband(c_driverController.getLeftY(),
-                                                                                OIConstants.kDriveDeadband),
-                                                                -MathUtil.applyDeadband(c_driverController.getLeftX(),
-                                                                                OIConstants.kDriveDeadband),
-                                                                -MathUtil.applyDeadband(c_driverController.getRightX(),
-                                                                                OIConstants.kDriveDeadband),
-                                                                true),
-                                                m_robotDrive));
+                driveTrain.setDefaultCommand(
+                                driveTrain.applyRequest(
+                                        () -> drive.withVelocityX(-c_driverController.getLeftY() * DriveConstants.kMaxSpeedMetersPerSecond)
+                                                        .withVelocityY(-c_driverController.getLeftX() * DriveConstants.kMaxSpeedMetersPerSecond)
+                                                        .withRotationalRate(-c_driverController.getRightX() * DriveConstants.kMaxAngularSpeed)));
 
                 CommandScheduler.getInstance().run();
-                */
+
         }
 
         private void configureBindings() {
+
+                final var idle = new SwerveRequest.Idle();
+                RobotModeTriggers.disabled().whileTrue(
+                        driveTrain.applyRequest(() -> idle).ignoringDisable(true)
+                );
+                
+                c_driverController.leftBumper().onTrue(driveTrain.runOnce(() -> driveTrain.seedFieldCentric()));
         }
 
         public Command getAutonomousCommand() {
-                //return autoChooser.getSelected();
+                // return autoChooser.getSelected();
                 return Commands.none();
         }
 }
