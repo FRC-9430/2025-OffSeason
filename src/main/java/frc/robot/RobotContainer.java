@@ -19,7 +19,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class RobotContainer {
         // The robot's subsystems
-        private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+        // private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
         // The driver's controller
         public static CommandXboxController c_driverController = new CommandXboxController(
@@ -37,7 +37,7 @@ public class RobotContainer {
                 autoChooser = AutoBuilder.buildAutoChooser();
 
                 SmartDashboard.putData("Auto Chooser", autoChooser);
-
+                /*
                 // Configure default commands
                 m_robotDrive.setDefaultCommand(
                                 // The left stick controls translation of the robot.
@@ -54,6 +54,7 @@ public class RobotContainer {
                                                 m_robotDrive));
 
                 CommandScheduler.getInstance().run();
+                */
         }
 
         private void configureBindings() {
