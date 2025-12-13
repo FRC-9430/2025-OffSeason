@@ -2,9 +2,6 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,24 +16,27 @@ import edu.wpi.first.wpilibj.Filesystem;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Optional;
-import edu.wpi.first.math.geometry.Pose3d;
 
 public class Constants {
 
         public class DriveConstants {
 
-                public static final int kFrontLeftDriveMotorCanID = 11;
-                public static final int kFrontLeftTurningMotorCanID = 12;
+                public static final int kBRDriveMotorCanID = 11;
+                public static final int kBRTurningMotorCanID = 12;
 
-                public static final int kFrontRightDriveMotorCanID = 13;
-                public static final int kFrontRightTurningMotorCanID = 14;
+                public static final int kBLDriveMotorCanID = 13;
+                public static final int kBLTurningMotorCanID = 14;
 
-                public static final int kBackLeftDriveMotorCanID = 15;
-                public static final int kBackLeftTurningMotorCanID = 16;
+                public static final int kFRDriveMotorCanID = 15;
+                public static final int kFRTurningMotorCanID = 16;
 
-                public static final int kBackRightDriveMotorCanID = 17;
-                public static final int kBackRightTurningMotorCanID = 18;
+                public static final int kFLDriveMotorCanID = 17;
+                public static final int kFLTurningMotorCanID = 18;
+
+                public static final int kFREncoderID = 21;
+                public static final int kBREncoderID = 22;
+                public static final int kBLEncoderID = 23;
+                public static final int kFLEncoderID = 24;
 
                 public static final int pigeon2CanID = 1;
 
@@ -124,29 +124,32 @@ public class Constants {
 
         public static final class AprilTagConstants {
 
-            public static final String kAprilTagFieldLayout = "2025-reefscape-welded.json";
-            public static final String kAprilTagFieldLayoutJson = (Paths.get(Filesystem.getDeployDirectory().getAbsolutePath() +
-                                    kAprilTagFieldLayout)).toString();
-            public static final AprilTagFieldLayout kFieldLayout = loadAprilTagLayout();
+                public static final String kAprilTagFieldLayout = "2025-reefscape-welded.json";
+                public static final String kAprilTagFieldLayoutJson = (Paths
+                                .get(Filesystem.getDeployDirectory().getAbsolutePath() +
+                                                kAprilTagFieldLayout))
+                                .toString();
+                public static final AprilTagFieldLayout kFieldLayout = loadAprilTagLayout();
 
-            /**
-             * Loads an AprilTagFieldLayout from the deploy directory.
-             *
-             * @return The loaded AprilTagFieldLayout, or a new empty one if an error
-             *         occurs.
-             */
-            private static AprilTagFieldLayout loadAprilTagLayout() {
-                try {
-                    // This loads the JSON file from the deploy directory.
-                    return AprilTagFieldLayout.loadFromResource(kAprilTagFieldLayoutJson);
-                } catch (IOException e) {
-                    // If the file is not found or cannot be parsed, report an error to the
-                    // Driver Station and return an empty layout to prevent a crash.
-                    DriverStation.reportError("Failed to load AprilTag field layout: " + kAprilTagFieldLayout,
-                            e.getStackTrace());
-                    return new AprilTagFieldLayout(new ArrayList<>(), 0, 0);
+                /**
+                 * Loads an AprilTagFieldLayout from the deploy directory.
+                 *
+                 * @return The loaded AprilTagFieldLayout, or a new empty one if an error
+                 *         occurs.
+                 */
+                private static AprilTagFieldLayout loadAprilTagLayout() {
+                        try {
+                                // This loads the JSON file from the deploy directory.
+                                return AprilTagFieldLayout.loadFromResource(kAprilTagFieldLayoutJson);
+                        } catch (IOException e) {
+                                // If the file is not found or cannot be parsed, report an error to the
+                                // Driver Station and return an empty layout to prevent a crash.
+                                DriverStation.reportError(
+                                                "Failed to load AprilTag field layout: " + kAprilTagFieldLayout,
+                                                e.getStackTrace());
+                                return new AprilTagFieldLayout(new ArrayList<>(), 0, 0);
+                        }
                 }
-            }
         }
 
         public static final class AutoConstants {
@@ -164,84 +167,27 @@ public class Constants {
                                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
         }
 
-        public static final class Configs {
 
-                public static final class X2TSwerveModule {
-                        public static final SparkFlexConfig drivingConfig = new SparkFlexConfig();
-                        public static final SparkFlexConfig turningConfig = new SparkFlexConfig();
+        public static final class ModuleConstants {
+                // The MAXSwerve module can be configured with one of three pinion gears: 12T,
+                // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
+                // more teeth will result in a robot that drives faster).
+                public static final int kDrivingMotorPinionTeeth = 12;
 
-                        static {
-                                // Use module constants to calculate conversion factors and feed forward gain.
-                                double drivingFactor = ModuleConstants.kWheelDiameterMeters * Math.PI
-                                                / ModuleConstants.kDrivingMotorReduction;
-                                double turningFactor = 2 * Math.PI;
-                                double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps;
-
-                                drivingConfig
-                                                .idleMode(IdleMode.kBrake)
-                                                .smartCurrentLimit(50);
-                                drivingConfig.encoder
-                                                .positionConversionFactor(drivingFactor) // meters
-                                                .velocityConversionFactor(drivingFactor / 60.0); // meters per second
-                                drivingConfig.closedLoop
-                                                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                                                // These are example gains you may need to them for your own robot!
-                                                .pid(0.04, 0, 0)
-                                                .velocityFF(drivingVelocityFeedForward)
-                                                .outputRange(-1, 1);
-
-                                turningConfig
-                                                .idleMode(IdleMode.kBrake)
-                                                .smartCurrentLimit(20);
-                                turningConfig.absoluteEncoder
-                                                // Invert the turning encoder, since the output shaft rotates in the
-                                                // opposite
-                                                // direction of the steering motor in the MAXSwerve Module.
-                                                .inverted(true)
-                                                .positionConversionFactor(turningFactor) // radians
-                                                .velocityConversionFactor(turningFactor / 60.0); // radians per second
-                                turningConfig.closedLoop
-                                                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                                // These are example gains you may need to them for your own robot!
-                                                .pid(0.1, 0, 0)
-                                                .outputRange(-1, 1)
-                                                // Enable PID wrap around for the turning motor. This will allow the PID
-                                                // controller to go through 0 to get to the setpoint i.e. going from 350
-                                                // degrees
-                                                // to 10 degrees will go through 0 rather than the other direction which
-                                                // is a
-                                                // longer route.
-                                                .positionWrappingEnabled(true)
-                                                .positionWrappingInputRange(0, turningFactor)
-
-                                                .maxMotion
-                                                        .allowedClosedLoopError(1)
-                                                        .maxVelocity(1)
-                                                        .maxAcceleration(0.5);
-                                
-                        }
-                };
-
-                public static final class ModuleConstants {
-                        // The MAXSwerve module can be configured with one of three pinion gears: 12T,
-                        // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
-                        // more teeth will result in a robot that drives faster).
-                        public static final int kDrivingMotorPinionTeeth = 12;
-
-                        // Calculations required for driving motor conversion factors and feed forward
-                        public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
-                        public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-                        public static final double kDrivingMotorFreeSpeedRps = Units.feetToMeters(18.5) / kWheelCircumferenceMeters;
-                        // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
-                        // teeth on the bevel pinion
-                        // TODO bbontrager89 20241107.1742: Need to update values for
-                        // kDrivingMotorReduction
-                        public static final double kDrivingMotorReduction = (45.0 * 22)
-                                        / (kDrivingMotorPinionTeeth * 15);
-                        public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps
-                                        * kWheelCircumferenceMeters)
-                                        / kDrivingMotorReduction;
-                }
+                // Calculations required for driving motor conversion factors and feed forward
+                public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
+                public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+                public static final double kDrivingMotorFreeSpeedRps = Units.feetToMeters(18.5)
+                                / kWheelCircumferenceMeters;
+                // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
+                // teeth on the bevel pinion
+                // TODO bbontrager89 20241107.1742: Need to update values for
+                // kDrivingMotorReduction
+                public static final double kDrivingMotorReduction = (45.0 * 22)
+                                / (kDrivingMotorPinionTeeth * 15);
+                public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps
+                                * kWheelCircumferenceMeters)
+                                / kDrivingMotorReduction;
         }
 
 }
