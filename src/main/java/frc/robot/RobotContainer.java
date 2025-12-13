@@ -4,67 +4,80 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+
 import frc.robot.config.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
-        // The robot's subsystems
-        private CommandSwerveDrivetrain driveTrain = TunerConstants.createDrivetrain();
-        private SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-                        .withDeadband(OIConstants.kDriveDeadband)
-                        .withRotationalDeadband(OIConstants.kDriveDeadband)
-                        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-        // The driver's controller
-        public static CommandXboxController c_driverController = new CommandXboxController(
-                        OIConstants.kDriverControllerPort);
+    /* Setting up bindings for necessary control of the swerve drive platform */
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-        // The operator's controller
-        public static CommandXboxController c_operatorController = new CommandXboxController(
-                        OIConstants.kOperatorControllerPort);
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
-        // private final SendableChooser<Command> autoChooser;
+    private final CommandXboxController joystick = new CommandXboxController(0);
 
-        public RobotContainer() {
-                configureBindings();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-                // autoChooser = AutoBuilder.buildAutoChooser();
+    public RobotContainer() {
+        configureBindings();
+    }
 
-                // SmartDashboard.putData("Auto Chooser", autoChooser);
+    private void configureBindings() {
+        // Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
 
-                // Configure default commands
-                driveTrain.setDefaultCommand(
-                                driveTrain.applyRequest(
-                                        () -> drive.withVelocityX(-c_driverController.getLeftY() * DriveConstants.kMaxSpeedMetersPerSecond)
-                                                        .withVelocityY(-c_driverController.getLeftX() * DriveConstants.kMaxSpeedMetersPerSecond)
-                                                        .withRotationalRate(-c_driverController.getRightX() * DriveConstants.kMaxAngularSpeed)));
+        // Idle while the robot is disabled. This ensures the configured
+        // neutral mode is applied to the drive motors while disabled.
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
 
-                CommandScheduler.getInstance().run();
+        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        ));
 
-        }
+        // Run SysId routines when holding back/start and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        private void configureBindings() {
+        // reset the field-centric heading on left bumper press
+        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-                final var idle = new SwerveRequest.Idle();
-                RobotModeTriggers.disabled().whileTrue(
-                        driveTrain.applyRequest(() -> idle).ignoringDisable(true)
-                );
-                
-                c_driverController.leftBumper().onTrue(driveTrain.runOnce(() -> driveTrain.seedFieldCentric()));
-        }
+        drivetrain.registerTelemetry(logger::telemeterize);
+    }
 
-        public Command getAutonomousCommand() {
-                // return autoChooser.getSelected();
-                return Commands.none();
-        }
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
+    }
 }
