@@ -32,6 +32,17 @@ public class AprilTagSubsystem{
           if (presence == true){
             printLatestResult();
           }
+    }
+
+    public void getPose(){
+        //check for available targets
+        PhotonPipelineResult targets = camera.getLatestResult();
+        boolean presence = targets.hasTargets();
+        if (presence == true){
+            targets.getBestTarget().getBestCameraToTarget()
+
+        }
+
+        }
 
     }
-}
