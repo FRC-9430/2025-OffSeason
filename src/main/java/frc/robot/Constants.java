@@ -83,10 +83,6 @@ public class Constants {
                 public static final String FL_CAMERA_NAME = "Arducam_FL";
                 public static final String FR_CAMERA_NAME = "Arducam_FR";
 
-                // TODO: Move PhotonCamera object instantiations to VisionSubsystem
-                public static final PhotonCamera FRONT_LEFT_CAMERA = new PhotonCamera(FL_CAMERA_NAME);
-                public static final PhotonCamera FRONT_RIGHT_CAMERA = new PhotonCamera(FR_CAMERA_NAME);
-
                 // The layout of the AprilTags on the field
                 public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout
                                 .loadField(AprilTagFields.kDefaultField);
