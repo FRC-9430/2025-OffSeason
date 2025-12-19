@@ -2,15 +2,20 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import java.io.IOException;
@@ -77,14 +82,20 @@ public class Constants {
 
                 public static final String FL_CAMERA_NAME = "Arducam_FL";
                 public static final String FR_CAMERA_NAME = "Arducam_FR";
-                public static final String BL_CAMERA_NAME = "Arducam_BL";
-                public static final String BR_CAMERA_NAME = "Arducam_BR";
 
                 // TODO: Move PhotonCamera object instantiations to VisionSubsystem
                 public static final PhotonCamera FRONT_LEFT_CAMERA = new PhotonCamera(FL_CAMERA_NAME);
                 public static final PhotonCamera FRONT_RIGHT_CAMERA = new PhotonCamera(FR_CAMERA_NAME);
-                public static final PhotonCamera BACK_LEFT_CAMERA = new PhotonCamera(BL_CAMERA_NAME);
-                public static final PhotonCamera BACK_RIGHT_CAMERA = new PhotonCamera(BR_CAMERA_NAME);
+
+                // The layout of the AprilTags on the field
+                public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout
+                                .loadField(AprilTagFields.kDefaultField);
+                                
+                // The standard deviations of our vision estimated poses, which affect
+                // correction rate
+                // TODO. Experiment and determine estimation noise on an actual robot.
+                public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+                public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
 
                 public static final Transform3d FRONT_LEFT_CAMERA_LOCATION = new Transform3d(
                                 new Translation3d(0.284, 0.284, 0.209),
@@ -92,14 +103,6 @@ public class Constants {
 
                 public static final Transform3d FRONT_RIGHT_CAMERA_LOCATION = new Transform3d(
                                 new Translation3d(0.284, -0.284, 0.209),
-                                new Rotation3d(0, -Math.toRadians(15), -Math.toRadians(45)));
-
-                public static final Transform3d BACK_LEFT_CAMERA_LOCATION = new Transform3d(
-                                new Translation3d(-0.284, 0.284, 0.209),
-                                new Rotation3d(0, -Math.toRadians(15), Math.toRadians(45)));
-
-                public static final Transform3d BACK_RIGHT_CAMERA_LOCATION = new Transform3d(
-                                new Translation3d(-0.284, -0.284, 0.209),
                                 new Rotation3d(0, -Math.toRadians(15), -Math.toRadians(45)));
 
                 public static final Transform3d getTransformOf(PhotonCamera camera) {
@@ -110,16 +113,11 @@ public class Constants {
                                 case FR_CAMERA_NAME:
                                         return FRONT_RIGHT_CAMERA_LOCATION;
 
-                                case BL_CAMERA_NAME:
-                                        return BACK_LEFT_CAMERA_LOCATION;
-
-                                case BR_CAMERA_NAME:
-                                        return BACK_RIGHT_CAMERA_LOCATION;
-
                                 default:
                                         return null;
                         }
                 }
+
         }
 
         public static final class AprilTagConstants {
@@ -166,7 +164,6 @@ public class Constants {
                 public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
         }
-
 
         public static final class ModuleConstants {
                 // The MAXSwerve module can be configured with one of three pinion gears: 12T,
