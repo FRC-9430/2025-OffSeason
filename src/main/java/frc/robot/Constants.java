@@ -93,9 +93,9 @@ public class Constants {
                                 
                 // The standard deviations of our vision estimated poses, which affect
                 // correction rate
-                // TODO. Experiment and determine estimation noise on an actual robot.
-                public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
-                public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+                // Calculated usign mean deviation of pixels of 0.23, doubled for z, 1/8 for multiple tags
+                public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.25, 0.25, 0.5);
+                public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.03125, 0.03125, 0.0625);
 
                 public static final Transform3d FRONT_LEFT_CAMERA_LOCATION = new Transform3d(
                                 new Translation3d(0.284, 0.284, 0.209),
