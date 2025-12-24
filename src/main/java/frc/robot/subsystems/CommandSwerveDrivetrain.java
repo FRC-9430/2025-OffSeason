@@ -9,14 +9,20 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -183,6 +189,58 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
     }
+    
+    public void configureAutoBuilder() {
+
+                RobotConfig config = null;
+                try {
+                        config = RobotConfig.fromGUISettings();
+                } catch (Exception e) {
+                        // Handle exception as needed
+                        e.printStackTrace();
+                }
+
+                // Configure AutoBuilder last
+                AutoBuilder.configure(
+                                this::getPose, // Robot pose supplier
+                                this::resetPose, // Method to reset odometry (will be called if your auto has a starting
+                                                 // pose)
+                                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                                (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the
+                                                                                      // robot given ROBOT RELATIVE
+                                                                                      // ChassisSpeeds. Also optionally
+                                                                                      // outputs individual module
+                                                                                      // feedforwards
+                                new PPHolonomicDriveController( // PPHolonomicController is the built in path following
+                                                                // controller for holonomic drive trains
+                                                new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                                                new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                                ),
+                                config, // The robot configuration
+                                () -> {
+                                        return false;
+                                },
+                                this // Reference to this subsystem to set requirements
+                );
+
+        }
+
+        public Pose2d getPose() {
+                return getState().Pose;
+        }
+
+        public void resetPose(Pose2d pose) {
+                super.resetPose(pose);
+        }
+
+        public ChassisSpeeds getRobotRelativeSpeeds() {
+                return getState().Speeds;
+        }
+
+        public void driveRobotRelative(ChassisSpeeds speeds) {
+                applyRequest(() -> new SwerveRequest.ApplyRobotSpeeds().withSpeeds(speeds)).execute();
+
+        }
 
     /**
      * Returns a command that applies the specified control request to this swerve drivetrain.
@@ -235,6 +293,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        SmartDashboard.putNumber("Drivetrain est Pose X", getState().Pose.getX());
+        
+        SmartDashboard.putNumber("Drivetrain est Pose Y", getState().Pose.getY());
     }
 
     private void startSimThread() {
