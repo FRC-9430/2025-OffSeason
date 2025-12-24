@@ -16,11 +16,6 @@ import edu.wpi.first.math.util.Units;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class Constants {
 
@@ -116,36 +111,6 @@ public class Constants {
 
         }
 
-        public static final class AprilTagConstants {
-
-                public static final String kAprilTagFieldLayout = "2025-reefscape-welded.json";
-                public static final String kAprilTagFieldLayoutJson = (Paths
-                                .get(Filesystem.getDeployDirectory().getAbsolutePath() +
-                                                kAprilTagFieldLayout))
-                                .toString();
-                public static final AprilTagFieldLayout kFieldLayout = loadAprilTagLayout();
-
-                /**
-                 * Loads an AprilTagFieldLayout from the deploy directory.
-                 *
-                 * @return The loaded AprilTagFieldLayout, or a new empty one if an error
-                 *         occurs.
-                 */
-                private static AprilTagFieldLayout loadAprilTagLayout() {
-                        try {
-                                // This loads the JSON file from the deploy directory.
-                                return AprilTagFieldLayout.loadFromResource(kAprilTagFieldLayoutJson);
-                        } catch (IOException e) {
-                                // If the file is not found or cannot be parsed, report an error to the
-                                // Driver Station and return an empty layout to prevent a crash.
-                                DriverStation.reportError(
-                                                "Failed to load AprilTag field layout: " + kAprilTagFieldLayout,
-                                                e.getStackTrace());
-                                return new AprilTagFieldLayout(new ArrayList<>(), 0, 0);
-                        }
-                }
-        }
-
         public static final class AutoConstants {
                 public static final double kMaxSpeedMetersPerSecond = 3;
                 public static final double kMaxAccelerationMetersPerSecondSquared = 3;
@@ -159,28 +124,6 @@ public class Constants {
                 // Constraint for the motion profiled robot angle controller
                 public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-        }
-
-        public static final class ModuleConstants {
-                // The MAXSwerve module can be configured with one of three pinion gears: 12T,
-                // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
-                // more teeth will result in a robot that drives faster).
-                public static final int kDrivingMotorPinionTeeth = 12;
-
-                // Calculations required for driving motor conversion factors and feed forward
-                public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
-                public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-                public static final double kDrivingMotorFreeSpeedRps = Units.feetToMeters(18.5)
-                                / kWheelCircumferenceMeters;
-                // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
-                // teeth on the bevel pinion
-                // TODO bbontrager89 20241107.1742: Need to update values for
-                // kDrivingMotorReduction
-                public static final double kDrivingMotorReduction = (45.0 * 22)
-                                / (kDrivingMotorPinionTeeth * 15);
-                public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps
-                                * kWheelCircumferenceMeters)
-                                / kDrivingMotorReduction;
         }
 
 }
