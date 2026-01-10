@@ -7,6 +7,7 @@
 
     b. FOLLOW THE INSTRUCTIONS ON THE PAGE
         <!-- (CTRL + P = "COMMAND PALLETE") -->
+        <!-- TYPE "> Manage Vendor..." >
 
 3. FINALLY, Commit your changes by **TYPING** the terminal commands below:
 
