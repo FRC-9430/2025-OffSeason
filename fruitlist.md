@@ -8,8 +8,9 @@
     b. FOLLOW THE INSTRUCTIONS ON THE PAGE
         <!-- (CTRL + P = "COMMAND PALLETE") -->
 
-3. FINALLY, Commit your changes using the terminal commands below:
+3. FINALLY, Commit your changes by **TYPING** the terminal commands below:
 
+` git add .`
 ` git commit -m "add [fruit] to list - [student_name]" -a                      `
 
 **YOU CAN DO THIS. HURRY!**
