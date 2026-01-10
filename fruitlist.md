@@ -6,7 +6,7 @@
         (MOVE THE **MOUSE** DOWN TO THE **BOTTOM** TO SHOW THE DOCK)
 
     b. FOLLOW THE INSTRUCTIONS ON THE PAGE
-        (CTRL + P = "COMMAND PALLETE")
+        <!-- (CTRL + P = "COMMAND PALLETE") -->
 
 3. FINALLY, Commit your changes using the terminal commands below:
 
@@ -18,3 +18,4 @@
 apple
 pear
 banana
+pinapple
