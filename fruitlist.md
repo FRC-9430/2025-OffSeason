@@ -5,7 +5,7 @@
     a. OPEN THE WEB BROWSER ("Brave Browser")
         (MOVE THE **MOUSE** DOWN TO THE **BOTTOM** TO SHOW THE DOCK)
 
-    b. FOLLOW THE INSTRUCTIONS ON THE PAGE
+    b. FOLLOW THE INSTRUCTIONS **ON THE PAGE**
         <!-- (CTRL + P = "COMMAND PALLETE") -->
         <!-- TYPE "> Manage Vendor..." >
 
