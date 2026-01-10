@@ -6,7 +6,7 @@
 3. Commit your changes using the terminal commands below:
 
 `git add .`
-`git commit -m "add [fruit] to list - [student_name]`
+`git commit -m "add [fruit] to list - [student_name]"`
 
 
 **YOU CAN DO THIS. HURRY!**
