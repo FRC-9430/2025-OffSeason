@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -16,10 +17,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Vision.Limelight;
 import frc.robot.config.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.DashboardSubsystem;
-import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.utils.PathUtils;
 
 public class RobotContainer {
@@ -43,7 +44,8 @@ public class RobotContainer {
 
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-        public final PoseEstimatorSubsystem vision = new PoseEstimatorSubsystem(drivetrain::addVisionMeasurement);
+        public final Limelight vision = new Limelight(drivetrain);
+
 
         public final DashboardSubsystem dash = new DashboardSubsystem();
 
@@ -51,6 +53,9 @@ public class RobotContainer {
                 drivetrain.configureAutoBuilder();
                 configureBindings();
                 PathUtils.WarmUp();
+                vision.useLimelight(true);
+                vision.trustLL(true);
+                vision.setAlliance(Alliance.Blue);
         }
 
         private void configureBindings() {
